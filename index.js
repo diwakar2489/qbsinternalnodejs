@@ -1,0 +1,23 @@
+import express from "express";
+import dotenv from "dotenv";
+import cookieParser from "cookie-parser";
+import cors from "cors";
+import db from "./config/Database.js";
+import Authrouter from "./routes/index.js";
+dotenv.config();
+const app = express();
+
+try {
+    await db.authenticate();
+    console.log('Database Connected...');
+} catch (error) {
+    console.error(error);
+}
+
+app.use(cors({credentials:true, origin:'http://localhost:3000' }));
+app.use(cookieParser());
+app.use(express.json());
+app.use(express.urlencoded({extended:true}));
+app.use('/api',Authrouter);
+
+app.listen(8081, ()=> console.log('Server running at port 8081'));
