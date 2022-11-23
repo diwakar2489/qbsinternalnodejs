@@ -49,7 +49,7 @@ Users.updateUsersInfo = (id, userReqtData, result) =>{
                 userReqtData.refresh_token,
                 id
             ],(err,res)=>{
-                console.log(dbConn.query);
+               // console.log(dbConn.query);
             if(err){
                 console.log(err)
             }else {

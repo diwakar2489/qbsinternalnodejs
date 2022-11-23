@@ -59,7 +59,7 @@ module.exports.Login = async (req, res) => {
                 });
 
                 const refreshToken = jwt.sign({ userId, name, email }, process.env.REFRESH_TOKEN_SECRET, {
-                    expiresIn: '1d'
+                    expiresIn: '20s'
                 });
                 var requestData = {
                     refresh_token: refreshToken,
@@ -70,7 +70,7 @@ module.exports.Login = async (req, res) => {
 
                 res.cookie('refreshToken', refreshToken, {
                     httpOnly: true,
-                    maxAge: 24 * 60 * 60 * 1000
+                    maxAge:  6000
                 });
                 console.log('login SuccessFully')
                 res.json({ accessToken });
