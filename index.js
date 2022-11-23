@@ -1,18 +1,18 @@
-import express from "express";
-import dotenv from "dotenv";
-import cookieParser from "cookie-parser";
-import cors from "cors";
-import db from "./config/Database.js";
-import Authrouter from "./routes/index.js";
-dotenv.config();
+var express = require("express");
+var dotenv = require("dotenv");
+var cookieParser = require("cookie-parser");
+var cors = require("cors");
+
+require('dotenv').config();
+
+// console.log(process.env.DB_HOST); 
+// console.log(process.env.DB_DATABASE); 
+// console.log(process.env.PORT); 
+
 const app = express();
 
-try {
-    await db.authenticate();
-    console.log('Database Connected...');
-} catch (error) {
-    console.error(error);
-}
+var Authrouter = require("./routes/index.js");
+
 
 app.use(cors({credentials:true, origin:'http://localhost:3000' }));
 app.use(cookieParser());
@@ -20,4 +20,4 @@ app.use(express.json());
 app.use(express.urlencoded({extended:true}));
 app.use('/api',Authrouter);
 
-app.listen(8081, ()=> console.log('Server running at port 8081'));
+app.listen(8082, ()=> console.log('Server running at port 8082'));
