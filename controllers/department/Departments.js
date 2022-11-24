@@ -1,5 +1,5 @@
 var Departments = require("../../models/DepartmentModel.js");
-module.exports.List = async (req, res) => {
+module.exports.DepartmentList = async (req, res) => {
     try {
         // const page = parseInt(req.query.page);
         // const size = parseInt(req.query.size);
