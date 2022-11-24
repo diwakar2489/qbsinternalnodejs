@@ -3,6 +3,11 @@ var Openings = require("../../models/OpeningModel.js");
 
 module.exports.List = async (req, res) => {
     try {
+        const page = parseInt(req.query.page);
+        const size = parseInt(req.query.size);
+
+        const skip = (page -1) * size;
+        const total = await Openings.countOpenings();
         Openings.getAllOpenings((error, data) => {
             res.status(200).json({ status: true, msg: 'Opening data fatch successfully', opening: data });
         });

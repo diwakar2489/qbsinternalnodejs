@@ -1,6 +1,10 @@
 var express = require("express");
 var { Login, Logout } = require("../controllers/auths/Users.js");
 var { List,Add,Edit,Update } = require("../controllers/openings/Opening.js");
+
+var { List } = require("../controllers/company/Companys.js");
+var { List } = require("../controllers/department/Departments.js");
+
 var { verifyToken } = require("../middleware/VerifyToken.js");
 //var { refreshToken } =  require("../controllers/auths/RefreshToken.js");
 
@@ -17,5 +21,8 @@ router.get('/opening', verifyToken, List);
 router.post('/add_opening',verifyToken,Add);
 router.post('/edit',verifyToken,Edit);
 router.put('/update_opening',verifyToken,Update);
+
+router.get('/company_list', verifyToken, List);
+router.get('/department_list', verifyToken, List);
 
 module.exports = router;
