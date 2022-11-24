@@ -1,4 +1,4 @@
-var Users = require("../models/UserModel.js");
+var Users = require("../../models/UserModel.js");
 var jwt = require("jsonwebtoken");
 
 module.exports.refreshToken = async(req, res) => {
