@@ -33,7 +33,7 @@ Openings.getOpeningsById = (ID,result) =>{
 //get add Project
 Openings.createProjectInfo = (ProjectReqData, result) =>{
     
-    var command = 'INSERT INTO tm_opening (comp_id,dept_id,role_id,opening_limit,name,description,experience,created_by,status) VALUES (?,?,?,?,?,?,?,?,?)' ;
+    var command = 'INSERT INTO tm_opening (comp_id,dept_id,role_id,opening_limit,name,description,experience,created_on,created_by,status) VALUES (?,?,?,?,?,?,?,?,?,?)' ;
     //var id = uuidv1();
     dbConn.query(command,[
         ProjectReqData.comp_id,
@@ -43,6 +43,7 @@ Openings.createProjectInfo = (ProjectReqData, result) =>{
         ProjectReqData.name,
         ProjectReqData.description,
         ProjectReqData.experience,
+        ProjectReqData.created_on,
         ProjectReqData.created_by,
         ProjectReqData.status
     ],
