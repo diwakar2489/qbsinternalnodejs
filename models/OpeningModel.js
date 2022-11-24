@@ -9,8 +9,26 @@ var Openings = function (list){
     this.status = list.status;
 };
 //get All Openings
-Openings.getAllOpenings = (result) =>{
-    dbConn.query('select O.* from tm_opening as O ',(err,res)=>{
+Openings.getAllOpenings = (pagees,pageSize,total,result) =>{
+    const numOfResults = total;
+        const numberOfPages = Math.ceil(numOfResults / pageSize);
+        let page = pagees ? Number(pagees) : 1;
+		const startingLimit = (page - 1) * pageSize;
+    dbConn.query('select O.id,O.opening_limit,O.experience,O.name as openingName,C.name as CompName,D.name as DeptName,R.name as RoleName from tm_opening as O '+
+    'left join tm_company as C on C.id = O.comp_id '+
+    'left join tm_department as D on D.id = O.dept_id '+
+    'left join tm_role as R on R.id = O.role_id limit '+startingLimit+','+pageSize,(err,res)=>{
+        if(err){
+            console.log(err)
+            result(err);
+        }else {
+            result(null,res);
+        }
+    })
+}
+//get All count Openings
+Openings.countOpenings = (result) =>{
+    dbConn.query('select COUNT(O.id) as Total from tm_opening as O ',(err,res)=>{
         if(err){
             console.log(err)
             result(err);

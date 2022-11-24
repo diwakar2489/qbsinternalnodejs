@@ -3,13 +3,15 @@ var Openings = require("../../models/OpeningModel.js");
 
 module.exports.List = async (req, res) => {
     try {
-        const page = parseInt(req.query.page);
-        const size = parseInt(req.query.size);
+        const pageSize = 10;
+        const page = parseInt(req.query.page) || 1;
+        const skip = (page-1)*pageSize;
 
-        const skip = (page -1) * size;
-        const total = await Openings.countOpenings();
-        Openings.getAllOpenings((error, data) => {
-            res.status(200).json({ status: true, msg: 'Opening data fatch successfully', opening: data });
+        Openings.countOpenings((error1,total) => {
+            Openings.getAllOpenings(page,pageSize,total,(error, data) => {
+                res.status(200).json({ status: true, msg: 'Opening data fatch successfully',TotalRecords:total, page_no:page, 
+                limit:pageSize, opening: data });
+            });
         });
 
     } catch (error) {
