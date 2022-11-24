@@ -57,4 +57,33 @@ Openings.createProjectInfo = (ProjectReqData, result) =>{
         }
     })
 };
+//update Openings
+Openings.updateOpeningInfo = (id, userReqtData, result) =>{
+    if(id){
+        var command = 'update tm_opening set comp_id = ?,dept_id =?,role_id = ?,opening_limit = ?,name = ?, description = ?,experience = ?,updated_on = ?,updated_by = ?,status = ? where id= ?'
+        dbConn.query(command,
+            [
+                userReqtData.comp_id,
+                userReqtData.dept_id,
+                userReqtData.role_id,
+                userReqtData.opening_limit,
+                userReqtData.name,
+                userReqtData.description,
+                userReqtData.experience,
+                userReqtData.updated_on,
+                userReqtData.updated_by,
+                userReqtData.status,
+                id
+            ],(err,res)=>{
+            if(err){
+                console.log(err)
+            }else {
+                result(null,res);
+            }
+        })
+    }else{
+        console.log(err)
+    }
+    
+}
 module.exports = Openings;

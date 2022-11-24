@@ -1,6 +1,6 @@
 var express = require("express");
 var { Login, Logout } = require("../controllers/auths/Users.js");
-var { getOpenings,CreateOpening } = require("../controllers/openings/Opening.js");
+var { List,Add,Edit,Update } = require("../controllers/openings/Opening.js");
 var { verifyToken } = require("../middleware/VerifyToken.js");
 //var { refreshToken } =  require("../controllers/auths/RefreshToken.js");
 
@@ -13,7 +13,9 @@ const router = express.Router();
 router.post('/login', Login);
 router.delete('/logout', Logout);
 
-router.get('/opening', verifyToken, getOpenings);
-router.post('/add_opening',verifyToken,CreateOpening);
+router.get('/opening', verifyToken, List);
+router.post('/add_opening',verifyToken,Add);
+router.post('/edit',verifyToken,Edit);
+router.put('/update_opening',verifyToken,Update);
 
 module.exports = router;
