@@ -15,6 +15,7 @@ module.exports.getOpenings = async (req, res) => {
 
 module.exports.CreateOpening = async (req, res) => {
     const { comp_id,dept_id, role_id, opening_limit, name,description,experience,created_on,created_by,status } = req.body;
+    //const created_on = req.body.created_on ? req.body.created_on :'null';
     if (opening_limit == '' && name == '')
         return res.status(400).json({ msg: "field is requird" });
     try {
@@ -26,7 +27,7 @@ module.exports.CreateOpening = async (req, res) => {
             name:name,
             description:description,
             experience:experience,
-            created_by:created_on,
+            created_on:created_on,
             created_by:created_by,
             status:status,
         }
