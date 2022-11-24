@@ -13,37 +13,17 @@ var jwt = require("jsonwebtoken");
 //     }
 // }
 
-// module.exports.Register = async (req, res) => {
-//     const { name, email, password, confPassword } = req.body;
-//     if (password !== confPassword)
-//         return res.status(400).json({ msg: "Password and Confirm Password not match" });
-//     const salt = await bcrypt.genSalt();
-//     const hashPassword = await bcrypt.hash(password, salt);
-//     try {
-//         await Users.create({
-//             name: name,
-//             email: email,
-//             password: hashPassword
-//         });
-//         res.json({ msg: "Register Berhasil" });
-//     } catch (error) {
-//         console.log(error);
-//     }
-// }
-
 module.exports.Login = async (req, res) => {
     //console.log(req.body)
     try {
         let emailID = req.body.email;
         Users.getUsersById(emailID, async (error, user) => {
-
             if (user == '') {
                 return res.status(400).json({ msg: "Invaild Username !" });
             } else {
-
                 const password = req.body.password;
                 const match = await bcrypt.compare(password, user[0].password);
-                console.log(match)
+                //   console.log(match)
                 //   console.log('password'+password);
                 //   console.log(match);
                 //   console.log('haspass'+user[0].password);
@@ -70,14 +50,11 @@ module.exports.Login = async (req, res) => {
 
                 res.cookie('refreshToken', refreshToken, {
                     httpOnly: true,
-                    maxAge:  24 * 60 * 60 * 1000
+                    maxAge: 24 * 60 * 60 * 1000
                 });
                 console.log('login SuccessFully')
-                res.json({ accessToken });
+                res.status(200).json({ accessToken, msg: 'user logged in successfully' });
             }
-
-
-
         });
     } catch (error) {
         console.log(error)

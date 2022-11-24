@@ -8,17 +8,41 @@ var Openings = function (list){
     this.description = list.description;
     this.status = list.status;
 };
+//get All Openings
+Openings.getAllOpenings = (result) =>{
+    dbConn.query('select O.* from tm_opening as O ',(err,res)=>{
+        if(err){
+            console.log(err)
+            result(err);
+        }else {
+            result(null,res);
+        }
+    })
+}
+//get All Openings
+Openings.getOpeningsById = (ID,result) =>{
+    dbConn.query('select O.* from tm_opening as O where O.id ="'+ID+'"',(err,res)=>{
+        if(err){
+            console.log(err)
+            result(err);
+        }else {
+            result(null,res);
+        }
+    })
+}
 //get add Project
 Openings.createProjectInfo = (ProjectReqData, result) =>{
     
-    var command = 'INSERT INTO tm_opening (dept_id,role_id,opening_limit,name,description,created_by,status) VALUES (?,?,?,?,?,?,?)' ;
+    var command = 'INSERT INTO tm_opening (comp_id,dept_id,role_id,opening_limit,name,description,experience,created_by,status) VALUES (?,?,?,?,?,?,?,?,?)' ;
     //var id = uuidv1();
     dbConn.query(command,[
+        ProjectReqData.comp_id,
         ProjectReqData.dept_id,
         ProjectReqData.role_id,
         ProjectReqData.opening_limit,
         ProjectReqData.name,
         ProjectReqData.description,
+        ProjectReqData.experience,
         ProjectReqData.created_by,
         ProjectReqData.status
     ],
