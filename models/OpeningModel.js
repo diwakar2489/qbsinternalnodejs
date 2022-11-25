@@ -17,7 +17,7 @@ Openings.getAllOpenings = (pagees,pageSize,total,result) =>{
     dbConn.query('select O.id,O.opening_limit,O.experience,O.status,O.name as openingName,C.name as CompName,D.name as DeptName,R.name as RoleName from tm_opening as O '+
     'left join tm_company as C on C.id = O.comp_id '+
     'left join tm_department as D on D.id = O.dept_id '+
-    'left join tm_role as R on R.id = O.role_id limit '+startingLimit+','+pageSize,(err,res)=>{
+    'left join tm_role as R on R.id = O.role_id ORDER BY O.id desc limit '+startingLimit+','+pageSize,(err,res)=>{
         if(err){
             console.log(err)
             result(err);
