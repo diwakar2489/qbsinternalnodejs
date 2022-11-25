@@ -1,5 +1,5 @@
 var express = require("express");
-var { Login, Logout } = require("../controllers/auths/Users.js");
+var { Login, Logout, ForgotPass, verifyOtp, changePassword } = require("../controllers/auths/Users.js");
 var { List,Add,Edit,Update } = require("../controllers/openings/Opening.js");
 
 var { companyList } = require("../controllers/company/Companys.js");
@@ -17,6 +17,9 @@ const router = express.Router();
 
 router.post('/login', Login);
 router.delete('/logout', Logout);
+router.post('/forgot-password', ForgotPass);
+router.post('/otp-verify', verifyOtp);
+router.put('/change-password', changePassword);
 
 router.get('/opening', verifyToken, List);
 router.post('/add_opening',verifyToken,Add);

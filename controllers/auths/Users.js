@@ -1,6 +1,7 @@
 var Users = require("../../models/UserModel.js");
 var bcrypt = require("bcrypt");
 var jwt = require("jsonwebtoken");
+var nodemailer = require('nodemailer');
 
 // module.exports.getUsers = async (req, res) => {
 //     try {
@@ -61,7 +62,105 @@ module.exports.Login = async (req, res) => {
         res.status(404).json({ status: false, msg: "Invalid Credentials !" });
     }
 }
+module.exports.ForgotPass = async(req, res) => {
+    const { email } = req.body;
+   Users.getUsersById(email, (err,result)=>{
+       // console.log(result);return false;
+       
+        if(result !=''){
 
+            let otpcode = Math.floor((Math.random()*10000)+1);
+            let OtpData = {
+                email:req.body.email,
+                code:otpcode,
+                expiresIn:new Date().getTime() + 300*1000
+            }
+            var transporter = nodemailer.createTransport({
+                service: 'gmail',
+                auth: {
+                  user: 'diwakarmahidon3@gmail.com',
+                  pass: 'liswuhwnkyuoraso'
+                }
+              });
+              
+              var mailOptions = {
+                from: 'diwakarmahidon3@gmail.com',
+                to: 'diwakar.pandey@qbslearning.com',
+                subject: 'verify otp',
+                text: `Your otp id ${otpcode}`
+              };
+              
+              transporter.sendMail(mailOptions, function(error, info){
+                if (error) {
+                  console.log(error);
+                } else {
+                  console.log('Email sent: ' + info.response);
+                }
+              });
+            Users.createUserOtp(OtpData, (error, UserInfo) => {
+                //console.log('update refreshToken')
+                res.status(200).json({ status: true, msg: 'please check your email id' });
+                
+            });
+            // const salt = await bcrypt.genSalt();
+            // const hashPassword = await bcrypt.hash(password, salt);
+            // try {
+            //     await Users.create({
+            //         email: email,
+            //         password: hashPassword
+            //     });
+            //     res.json({msg: "Register Berhasil"});
+            // } catch (error) {
+            //     console.log(error);
+            // }
+        }else{
+            res.status(200).json({ status: true, msg: 'email id is not vaild' });
+        }
+       
+    });
+   
+    
+}
+module.exports.verifyOtp = async (req, res) => {
+    const { email,code } = req.body;
+    Users.getUsersOtpCodeByEmail(email,code, (err,data)=>{
+        if(data!=''){
+            let currentTime = new Date().getTime();
+            let diff = data[0].expiresIn - currentTime;
+            // console.log('diff==='+diff);
+            // console.log('current==='+currentTime);
+            // console.log('exp==='+data.expiresIn);
+            if(diff < 0){
+                res.status(201).json({status:false,msg:"Otp time expires"});
+            }else{
+                res.status(201).json({status:true,msg:"Otp verify Successfully"});
+            }
+        }else{
+            res.status(201).json({status:false,msg:"otp and email is not vaild"});
+        }
+    });
+}
+module.exports.changePassword = async (req, res) => {
+    const { email,password } = req.body;
+    Users.getUsersByEmail(email, async (err,data)=>{
+        if(data!=''){
+            const salt = await bcrypt.genSalt();
+            const hashPassword = await bcrypt.hash(password, salt);
+            const updateData = {
+                password:hashPassword
+            }
+            Users.forgotPassword(email,updateData, (err,UserInfo)=>{
+                if(UserInfo){
+                    res.status(200).json({status:true,msg:"Password update successfully"});
+                }else{
+                    res.status(201).json({status:false,msg:"Something Went Wrong"});
+                }
+            })
+        }else{
+            res.status(400).json({status:false,msg:"Not Match email id"});
+        }
+    });
+}
 module.exports.Logout = async (req, res) => {
     const refreshToken = req.cookies.refreshToken;
     if (!refreshToken) return res.sendStatus(204);

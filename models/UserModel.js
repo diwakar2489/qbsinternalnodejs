@@ -29,6 +29,7 @@ Users.getUsersById = (emailID,results)  =>{
         }
     })
 }
+
 //get Users by RefreshToken
 Users.getUsersByRefreshToken = (RefreshToken,results)  =>{
     dbConn.query('select U.id,concat(UD.fname," ",UD.mname," ",UD.lname) as name,U.email,U.password,U.alt_email,U.refresh_token,U.dept_id,U.role_id,U.status from tm_user as U '+
@@ -61,4 +62,64 @@ Users.updateUsersInfo = (id, userReqtData, result) =>{
     }
     
 }
+Users.createUserOtp = (UserOtpReqData, result) =>{
+    
+    var command = 'INSERT INTO tt_user_otp (email,code,expiresIn) VALUES (?,?,?)' ;
+    //var id = uuidv1();
+    dbConn.query(command,[
+        UserOtpReqData.email,
+        UserOtpReqData.code,
+        UserOtpReqData.expiresIn],
+        (err,res)=>{
+        if(err){
+            console.log(err)
+        }else {
+            var otp_id = res.insertId;
+            console.log('Last insert ID in users otp', otp_id);
+            result(null,otp_id);
+        }
+    })
+};
+//get Users Otp code by id email
+Users.getUsersOtpCodeByEmail = (emailID,code,results)  =>{
+    dbConn.query('select OT.* from tt_user_otp as OT  where OT.email = "'+emailID+'" and OT.code = "'+code+'"',(err,res)=>{
+        if(err){
+            results(err);
+        }else {
+           results(null,res);
+        }
+    })
+}
+//get Users Otp code by id email
+Users.getUsersByEmail = (emailID,results)  =>{
+    dbConn.query('select OT.* from tt_user_otp as OT  where OT.email = "'+emailID+'"',(err,res)=>{
+        if(err){
+            results(err);
+        }else {
+           results(null,res);
+        }
+    })
+}
+//update Users
+Users.forgotPassword = (emailId, userReqtData, result) =>{
+    if(emailId){
+        var command = 'update  tm_user set password = ? where email= ?'
+        dbConn.query(command,
+            [
+                userReqtData.password,
+                emailId
+            ],(err,res)=>{
+               // console.log(dbConn.query);
+            if(err){
+                console.log(err)
+            }else {
+                result(null,res);
+            }
+        })
+    }else{
+        console.log(err)
+    }
+    
+}
+
 module.exports = Users;
