@@ -126,7 +126,7 @@ module.exports.verifyOtp = async (req, res) => {
                 res.status(201).json({status:true,msg:"Otp verify Successfully"});
             }
         }else{
-            res.status(201).json({status:false,msg:"otp and email is not vaild"});
+            res.status(201).json({status:false,msg:"OTP is not vaild please check"});
         }
     });
 }

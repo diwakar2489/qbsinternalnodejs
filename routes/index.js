@@ -1,7 +1,7 @@
 var express = require("express");
 var { Login, Logout, ForgotPass, verifyOtp, changePassword } = require("../controllers/auths/Users.js");
 
-var {addMessage} = require("../controllers/dashboard/Dashboard");
+var {DashboardMessage,addMessage,editMessage,DashboardMessageUpdate} = require("../controllers/dashboard/Dashboard");
 
 var { List,Add,Edit,Update } = require("../controllers/openings/Opening.js");
 
@@ -29,7 +29,10 @@ router.post('/forgot-password', ForgotPass);
 router.post('/otp-verify', verifyOtp);
 router.put('/change-password', changePassword);
 
+router.get('/messages',DashboardMessage);
 router.post('/add_messages',addMessage);
+router.post('/edit_messages',editMessage);
+router.put('/edit_messages',DashboardMessageUpdate);
 
 
 router.get('/opening', verifyToken, List);

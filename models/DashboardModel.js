@@ -42,4 +42,46 @@ Dashboard.createMessage = (DashboardReqData, result) =>{
         }
     })
 };
+//get Message By id
+Dashboard.getMessageById = (ID,result) =>{
+    dbConn.query('select M.* from tm_message as M where M.id ="'+ID+'"',(err,res)=>{
+        if(err){
+            console.log(err)
+            result(err);
+        }else {
+            result(null,res);
+        }
+    })
+};
+
+//get updated Dashboard
+Dashboard.updateDashboardMessageInfo = (ID,DashboardReqData, result) =>{
+    //console.log(DashboardReqData);return false;
+    if(ID){
+    var command = 'update tm_message set comp_id = ?,user_id =?,from_email = ?,message = ?,other_message = ?, photo = ?,status = ?,updated_on = ?,updated_by = ?, where id= ?';
+    //var id = uuidv1();
+    dbConn.query(command,[
+        DashboardReqData.comp_id,
+        DashboardReqData.UserId,
+        DashboardReqData.fromEmail,
+        DashboardReqData.UserMessage,
+        DashboardReqData.OtherMessage,
+        DashboardReqData.photo,
+        DashboardReqData.status,
+        DashboardReqData.updated_on,
+        DashboardReqData.updated_by
+        
+    ],
+        (err,res)=>{
+        if(err){
+            console.log(err)
+        }else {
+            result(null,res);
+        }
+    })
+}else{
+    console.log(err)
+}
+};
+
 module.exports = Dashboard;
