@@ -1,5 +1,8 @@
 var express = require("express");
 var { Login, Logout, ForgotPass, verifyOtp, changePassword } = require("../controllers/auths/Users.js");
+
+var {addMessage} = require("../controllers/dashboard/Dashboard");
+
 var { List,Add,Edit,Update } = require("../controllers/openings/Opening.js");
 
 var { companyList } = require("../controllers/company/Companys.js");
@@ -7,19 +10,27 @@ var { DepartmentList } = require("../controllers/department/Departments.js");
 var { getDepartmentWishRole } = require("../controllers/roles/Roles.js");
 
 var { verifyToken } = require("../middleware/VerifyToken.js");
-//var { refreshToken } =  require("../controllers/auths/RefreshToken.js");
+var { refreshToken } =  require("../controllers/auths/RefreshToken.js");
+
+var fileUploads = require("express-fileupload");
+
 
 const router = express.Router();
-
-//router.get('/users', verifyToken, getUsers);
+router.use(fileUploads({
+    useTempFiles : true,
+    tempFileDir : 'uploads/'
+}));
 //router.post('/users', verifyToken,Register);
-//router.get('/token', refreshToken);
+router.get('/token', refreshToken);
 
 router.post('/login', Login);
 router.delete('/logout', Logout);
 router.post('/forgot-password', ForgotPass);
 router.post('/otp-verify', verifyOtp);
 router.put('/change-password', changePassword);
+
+router.post('/add_messages',addMessage);
+
 
 router.get('/opening', verifyToken, List);
 router.post('/add_opening',verifyToken,Add);

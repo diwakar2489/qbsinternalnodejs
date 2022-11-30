@@ -102,19 +102,9 @@ module.exports.ForgotPass = async(req, res) => {
                 res.status(200).json({ status: true, msg: 'please check your email id' });
                 
             });
-            // const salt = await bcrypt.genSalt();
-            // const hashPassword = await bcrypt.hash(password, salt);
-            // try {
-            //     await Users.create({
-            //         email: email,
-            //         password: hashPassword
-            //     });
-            //     res.json({msg: "Register Berhasil"});
-            // } catch (error) {
-            //     console.log(error);
-            // }
+            
         }else{
-            res.status(200).json({ status: true, msg: 'email id is not vaild' });
+            res.status(200).json({ status: false, msg: 'email id is not vaild' });
         }
        
     });
