@@ -53,7 +53,7 @@ Dashboard.getMessageById = (ID,result) =>{
 };
 
 //get updated Dashboard
-Dashboard.updateDashboardMessageInfo = (ID,DashboardReqData, result) =>{
+Dashboard.updateDashboardWithIMGInfo = (ID,DashboardReqData, result) =>{
     //console.log(DashboardReqData);return false;
     if(ID){
     var command = 'update tm_message set comp_id = ?,title =?,message = ?, photo = ?,status = ?,updated_on = ?,updated_by = ? where id= ?'
@@ -63,6 +63,32 @@ Dashboard.updateDashboardMessageInfo = (ID,DashboardReqData, result) =>{
         DashboardReqData.title,
         DashboardReqData.message,
         DashboardReqData.photo,
+        DashboardReqData.status,
+        DashboardReqData.updated_on,
+        DashboardReqData.updated_by,
+        ID
+        
+    ],(err,res)=>{
+        if(err){
+            console.log(err)
+        }else {
+            result(null,res);
+        }
+    })
+}else{
+    console.log(err)
+}
+};
+//get updated Dashboard
+Dashboard.updateDashboardWithoutIMGInfo = (ID,DashboardReqData, result) =>{
+    //console.log(DashboardReqData);return false;
+    if(ID){
+    var command = 'update tm_message set comp_id = ?,title =?,message = ?,status = ?,updated_on = ?,updated_by = ? where id= ?'
+    //var id = uuidv1();
+    dbConn.query(command,[
+        DashboardReqData.comp_id,
+        DashboardReqData.title,
+        DashboardReqData.message,
         DashboardReqData.status,
         DashboardReqData.updated_on,
         DashboardReqData.updated_by,

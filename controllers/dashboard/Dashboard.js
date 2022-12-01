@@ -90,7 +90,7 @@ module.exports.DashboardMessageUpdate = async (req, res) => {
                 updated_on: date_formate,
                 updated_by: userId,
             }
-            Dashboard.updateDashboardMessageInfo(ID, requestData, (error, data) => {
+            Dashboard.updateDashboardWithIMGInfo(ID, requestData, (error, data) => {
                 console.log(data);
                 if (data) {
     
@@ -109,7 +109,7 @@ module.exports.DashboardMessageUpdate = async (req, res) => {
                 updated_on: date_formate,
                 updated_by: userId,
             }
-            Dashboard.updateDashboardMessageInfo(ID, requestData, (error, data) => {
+            Dashboard.updateDashboardWithoutIMGInfo(ID, requestData, (error, data) => {
                 console.log(data);
                 if (data) {
     
