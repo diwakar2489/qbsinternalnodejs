@@ -1,10 +1,10 @@
-var Dashboard = require("../../models/DashboardModel.js");
+var Bulletins = require('../../models/BulletinModel');
 var path = require('path');
 
-module.exports.DashboardMessage = async (req, res) => {
+module.exports.getAllBulletins = (req,res) =>{
     try {
-        Dashboard.getAllDashboard((error, data) => {
-            res.status(200).json({ status: true, msg: 'Dashboard message successfully', result: data });
+        Bulletins.getAllBulletin((error, data) => {
+            res.status(200).json({ status: true, msg: 'Bulletin message successfully', result: data });
         });
 
     } catch (error) {
@@ -12,66 +12,64 @@ module.exports.DashboardMessage = async (req, res) => {
         // console.log(error);
     }
 }
-
-module.exports.addMessage = async (req, res) => {
+module.exports.addBulletin = async (req, res) => {
+    console.log(req.files);
     try {
         const { compId, title, message, status, date_formate, userId } = req.body;
-        if (req.files) {
-            let fileName = Date.now() + '_' + req.files.profiles.name;
-            //console.log('fdsfsf'+fileName)
-
-            let newPath = path.join(process.cwd(), 'uploads/dashboards', fileName);
-            req.files.profiles.mv(newPath);
-            console.log(req.files);
+        if(req.files){
+            let fileName = Date.now() + '_' + req.files.attachment.name;
+           
+            let newPath = path.join(process.cwd(), 'uploads/bulletins', fileName);
+            req.files.attachment.mv(newPath);
+           // console.log(req.files);
             var requestData = {
                 comp_id: compId,
                 title: title,
                 message: message,
-                photo: fileName,
+                attachment:fileName,
                 status: status,
                 created_on: date_formate,
                 created_by: userId,
             }
-            Dashboard.createMessage(requestData, (error, message) => {
+            Bulletins.createBulletin(requestData, (error, message) => {
                 console.log(message);
                 if (message) {
-                    res.status(200).json({ status: true, msg: "Message data inserted successfully", data: message });
+                    res.status(200).json({ status: true, msg: "Bulletin data inserted successfully", data: message });
                 } else {
                     res.status(201).json({ status: false, msg: "Something Went Wrong" });
                 }
-
+    
             });
-
-        } else {
+           
+        }else{
             return res.status(201).json({ status: false, msg: "Image field is required" });
         }
-
-
+        
+        
     } catch (error) {
         res.status(400).json({ status: false, msg: "Something Went Wrong" });
         console.log(error);
     }
 }
-
-module.exports.editMessage = async (req, res) => {
-
+module.exports.editBulletinMessage = async (req, res) => {
+    //console.log(req.body)
     try {
         let ID = req.body.id;
         console.log(ID)
-        Dashboard.getMessageById(ID, (error, data) => {
+        Bulletins.getBulletinMessageById(ID, (error, data) => {
             console.log(data);
             if (data != '') {
-                res.status(200).json({ status: true, msg: "Dashboard Message Data fatch successfully", result: data });
+                res.status(200).json({ status: true, msg: "Bulletin Message Data fatch successfully", result: data });
             } else {
-                res.status(201).json({ status: false, msg: "Dashboard Message ID not founds !" });
+                res.status(201).json({ status: false, msg: "Bulletin Message ID not founds !" });
 
             }
         });
     } catch (e) {
-        res.status(204).json({ status: false, msg: "Dashboard message ID not founds !" });
+        res.status(204).json({ status: false, msg: "Bulletin message ID not founds !" });
     }
 };
-module.exports.DashboardMessageUpdate = async (req, res) => {
+module.exports.BulletinMessageUpdate = async (req, res) => {
     console.log(req.files);
     try {
         // console.log(req.body);
@@ -79,26 +77,26 @@ module.exports.DashboardMessageUpdate = async (req, res) => {
         let fileName = {};
         const { compId, title, message, status, date_formate, userId } = req.body;
         if (req.files) {
-            fileName = Date.now() + '_' + req.files.profiles.name;
+            fileName = Date.now() + '_' + req.files.attachment.name;
             // console.log('fdsfsf'+fileName)
-            let newPath = path.join(process.cwd(), 'uploads/dashboards', fileName);
-            req.files.profiles.mv(newPath);
+            let newPath = path.join(process.cwd(), 'uploads/bulletins', fileName);
+            req.files.attachment.mv(newPath);
             var requestData = {
                 comp_id: compId,
                 title: title,
                 message: message,
-                photo: fileName,
+                attachment: fileName,
                 status: status,
                 updated_on: date_formate,
                 updated_by: userId,
             }
-            Dashboard.updateDashboardWithIMGInfo(ID, requestData, (error, data) => {
+            Bulletins.updateBulletinWithIMGInfo(ID, requestData, (error, data) => {
                 console.log(data);
                 if (data) {
 
-                    res.status(200).json({ status: true, msg: 'Update Dashboard message successfully', result: data });
+                    res.status(200).json({ status: true, msg: 'Update Bulletin message successfully', result: data });
                 } else {
-                    res.status(201).json({ status: false, msg: 'Error for Update Dashboard message' });
+                    res.status(201).json({ status: false, msg: 'Error for Update Bulletin message' });
                 }
             });
 
@@ -111,13 +109,13 @@ module.exports.DashboardMessageUpdate = async (req, res) => {
                 updated_on: date_formate,
                 updated_by: userId,
             }
-            Dashboard.updateDashboardWithoutIMGInfo(ID, requestData, (error, data) => {
+            Bulletins.updateBulletinWithoutIMGInfo(ID, requestData, (error, data) => {
                 console.log(data);
                 if (data) {
 
-                    res.status(200).json({ status: true, msg: 'Update Dashboard message successfully', result: data });
+                    res.status(200).json({ status: true, msg: 'Update Bulletin message successfully', result: data });
                 } else {
-                    res.status(201).json({ status: false, msg: 'Error for Update Dashboard message' });
+                    res.status(201).json({ status: false, msg: 'Error for Update Bulletin message' });
                 }
             });
         }

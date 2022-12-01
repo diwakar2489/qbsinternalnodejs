@@ -5,6 +5,8 @@ var {DashboardMessage,addMessage,editMessage,DashboardMessageUpdate} = require("
 
 var { List,Add,Edit,Update } = require("../controllers/openings/Opening.js");
 
+var { getAllBulletins, addBulletin, editBulletinMessage, BulletinMessageUpdate} = require('../controllers/bulletin/Bulletins.js');
+
 var { companyList } = require("../controllers/company/Companys.js");
 var { DepartmentList } = require("../controllers/department/Departments.js");
 var { getDepartmentWishRole } = require("../controllers/roles/Roles.js");
@@ -32,8 +34,12 @@ router.put('/change-password', changePassword);
 router.get('/messages',verifyToken,DashboardMessage);
 router.post('/add_messages',verifyToken,addMessage);
 router.post('/edit_messages',verifyToken,editMessage);
-router.post('/update_messages',verifyToken,DashboardMessageUpdate);
+router.put('/update_messages',verifyToken,DashboardMessageUpdate);
 
+router.get('/bulletin',verifyToken,getAllBulletins);
+router.post('/add_bulletin',verifyToken,addBulletin);
+router.post('/edit_bulletin',verifyToken,editBulletinMessage);
+router.put('/update_bulletin',verifyToken,BulletinMessageUpdate);
 
 router.get('/opening', verifyToken, List);
 router.post('/add_opening',verifyToken,Add);
