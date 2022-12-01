@@ -29,10 +29,10 @@ router.post('/forgot-password', ForgotPass);
 router.post('/otp-verify', verifyOtp);
 router.put('/change-password', changePassword);
 
-router.get('/messages',DashboardMessage);
-router.post('/add_messages',addMessage);
-router.post('/edit_messages',editMessage);
-router.put('/edit_messages',DashboardMessageUpdate);
+router.get('/messages',verifyToken,DashboardMessage);
+router.post('/add_messages',verifyToken,addMessage);
+router.post('/edit_messages',verifyToken,editMessage);
+router.post('/update_messages',verifyToken,DashboardMessageUpdate);
 
 
 router.get('/opening', verifyToken, List);

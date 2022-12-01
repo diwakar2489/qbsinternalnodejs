@@ -1,6 +1,5 @@
 var express = require("express");
-var bodyParser = require('body-parser');
-
+var dotenv = require("dotenv");
 var cookieParser = require("cookie-parser");
 var cors = require("cors");
 
@@ -17,8 +16,8 @@ var Authrouter = require("./routes/index.js");
 
 app.use(cors({credentials:true, origin:'http://localhost:3000' }));
 app.use(cookieParser());
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended:false}));
+app.use(express.json());
+app.use(express.urlencoded({extended:true}));
 app.use('/api',Authrouter);
 
 app.listen(8082, ()=> console.log('Server running at port 8082'));

@@ -18,14 +18,12 @@ Dashboard.getAllDashboard = (result) =>{
 //get add Dashboard
 Dashboard.createMessage = (DashboardReqData, result) =>{
     //console.log(DashboardReqData);return false;
-    var command = 'INSERT INTO tm_message (comp_id,user_id,from_email,message,other_message,photo,status,created_on,created_by) VALUES (?,?,?,?,?,?,?,?,?)' ;
+    var command = 'INSERT INTO tm_message (comp_id,title,message,photo,status,created_on,created_by) VALUES (?,?,?,?,?,?,?)' ;
     //var id = uuidv1();
     dbConn.query(command,[
         DashboardReqData.comp_id,
-        DashboardReqData.UserId,
-        DashboardReqData.fromEmail,
-        DashboardReqData.UserMessage,
-        DashboardReqData.OtherMessage,
+        DashboardReqData.title,
+        DashboardReqData.message,
         DashboardReqData.photo,
         DashboardReqData.status,
         DashboardReqData.created_on,
@@ -58,21 +56,19 @@ Dashboard.getMessageById = (ID,result) =>{
 Dashboard.updateDashboardMessageInfo = (ID,DashboardReqData, result) =>{
     //console.log(DashboardReqData);return false;
     if(ID){
-    var command = 'update tm_message set comp_id = ?,user_id =?,from_email = ?,message = ?,other_message = ?, photo = ?,status = ?,updated_on = ?,updated_by = ?, where id= ?';
+    var command = 'update tm_message set comp_id = ?,title =?,message = ?, photo = ?,status = ?,updated_on = ?,updated_by = ? where id= ?'
     //var id = uuidv1();
     dbConn.query(command,[
         DashboardReqData.comp_id,
-        DashboardReqData.UserId,
-        DashboardReqData.fromEmail,
-        DashboardReqData.UserMessage,
-        DashboardReqData.OtherMessage,
+        DashboardReqData.title,
+        DashboardReqData.message,
         DashboardReqData.photo,
         DashboardReqData.status,
         DashboardReqData.updated_on,
-        DashboardReqData.updated_by
+        DashboardReqData.updated_by,
+        ID
         
-    ],
-        (err,res)=>{
+    ],(err,res)=>{
         if(err){
             console.log(err)
         }else {
