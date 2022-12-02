@@ -1,4 +1,6 @@
 var Roles = require("../../models/RoleModel.js");
+
+/*=============================== Get All Department Wish Role ==============================*/
 module.exports.getDepartmentWishRole = async (req, res) => {
     try {
 
@@ -14,6 +16,5 @@ module.exports.getDepartmentWishRole = async (req, res) => {
 
     } catch (error) {
         res.status(201).json({ status: false, msg: error })
-        // console.log(error);
     }
 }

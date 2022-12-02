@@ -4,7 +4,7 @@ var Roles = function (list) {
     this.name = list.name;
     this.status = list.status;
 };
-//get All Roles
+/*================= Get All Roles =================*/
 Roles.getAllRolesById = (ID, result) => {
     dbConn.query('select R.* from tm_role as R where R.dept_id =' + ID, (err, res) => {
         if (err) {

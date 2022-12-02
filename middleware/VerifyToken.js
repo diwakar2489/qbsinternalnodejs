@@ -2,7 +2,7 @@ var jwt = require("jsonwebtoken");
 
 module.exports.verifyToken = (req, res, next) => {
     const cookiesData = req.cookies.refreshToken;
-    
+
     const authHeader = req.headers['authorization'] || cookiesData;
 
     const token = authHeader && authHeader.split(' ')[1];

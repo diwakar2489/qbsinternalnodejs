@@ -1,27 +1,26 @@
 var dbConn = require("../config/mysql_connection.js");
-var Bulletin = function (list){
+var Bulletin = function (list) {
     this.id = list.id;
     this.title = list.title;
     this.message = list.message;
     this.status = list.status;
 };
-//get All Bulletin
-Bulletin.getAllBulletin = (result) =>{
-    dbConn.query('select B.* from tm_bulletin as B ',(err,res)=>{
-        if(err){
+/*=============== Get All Bulletin ============================*/
+Bulletin.getAllBulletin = (result) => {
+    dbConn.query('select B.* from tm_bulletin as B ', (err, res) => {
+        if (err) {
             console.log(err)
             result(err);
-        }else {
-            result(null,res);
+        } else {
+            result(null, res);
         }
     })
 }
-//get add Bulletin
-Bulletin.createBulletin = (BulletinReqData, result) =>{
-    //console.log(BulletinReqData);return false;
-    var command = 'INSERT INTO tm_bulletin (comp_id,title,message,bulletin_attachment,status,created_on,created_by) VALUES (?,?,?,?,?,?,?)' ;
+/*============================ Add Bulletin ======================================*/
+Bulletin.createBulletin = (BulletinReqData, result) => {
+    var command = 'INSERT INTO tm_bulletin (comp_id,title,message,bulletin_attachment,status,created_on,created_by) VALUES (?,?,?,?,?,?,?)';
     //var id = uuidv1();
-    dbConn.query(command,[
+    dbConn.query(command, [
         BulletinReqData.comp_id,
         BulletinReqData.title,
         BulletinReqData.message,
@@ -29,19 +28,19 @@ Bulletin.createBulletin = (BulletinReqData, result) =>{
         BulletinReqData.status,
         BulletinReqData.created_on,
         BulletinReqData.created_by
-        
+
     ],
-        (err,res)=>{
-        if(err){
-            console.log(err)
-        }else {
-            var msg_id = res.insertId;
-            console.log('Last insert ID in bulletin', msg_id);
-            result(null,msg_id);
-        }
-    })
+        (err, res) => {
+            if (err) {
+                console.log(err)
+            } else {
+                var msg_id = res.insertId;
+                console.log('Last insert ID in bulletin', msg_id);
+                result(null, msg_id);
+            }
+        })
 };
-//get Bulletin By id
+/*================================= Edit Bulletin By id ==================================*/
 Bulletin.getBulletinMessageById = (ID, result) => {
     dbConn.query('select M.* from tm_bulletin as M where M.id ="' + ID + '"', (err, res) => {
         if (err) {
@@ -53,7 +52,7 @@ Bulletin.getBulletinMessageById = (ID, result) => {
     })
 };
 
-//get updated Bulletin
+/*======================================  updated Bulletin with attachment ==================================================*/
 Bulletin.updateBulletinWithIMGInfo = (ID, BulletinReqData, result) => {
     if (ID) {
         var command = 'update tm_bulletin set comp_id = ?,title =?,message = ?, bulletin_attachment = ?,status = ?,updated_on = ?,updated_by = ? where id= ?'
@@ -79,7 +78,7 @@ Bulletin.updateBulletinWithIMGInfo = (ID, BulletinReqData, result) => {
         console.log(err)
     }
 };
-//get updated Bulletin
+/*================================== updated Bulletin without attachment ============================================*/
 Bulletin.updateBulletinWithoutIMGInfo = (ID, BulletinReqData, result) => {
     if (ID) {
         var command = 'update tm_bulletin set comp_id = ?,title =?,message = ?,status = ?,updated_on = ?,updated_by = ? where id= ?'

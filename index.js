@@ -1,13 +1,9 @@
 var express = require("express");
-var dotenv = require("dotenv");
+//var dotenv = require("dotenv");
 var cookieParser = require("cookie-parser");
 var cors = require("cors");
 
 require('dotenv').config();
-
-// console.log(process.env.DB_HOST); 
-// console.log(process.env.DB_DATABASE); 
-// console.log(process.env.PORT); 
 
 const app = express();
 

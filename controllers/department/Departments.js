@@ -1,4 +1,6 @@
 var Departments = require("../../models/DepartmentModel.js");
+
+/*=============== Get All Department ============================*/
 module.exports.DepartmentList = async (req, res) => {
     try {
         Departments.getAllDepartment((error, data) => {
@@ -7,6 +9,5 @@ module.exports.DepartmentList = async (req, res) => {
 
     } catch (error) {
         res.status(201).json({ status: false, msg: error })
-        // console.log(error);
     }
 }

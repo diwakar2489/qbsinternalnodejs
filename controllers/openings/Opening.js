@@ -1,6 +1,6 @@
 var Openings = require("../../models/OpeningModel.js");
 
-
+/*=========================== Get All Opening List ==============================*/
 module.exports.List = async (req, res) => {
     try {
         const pageSize = 10;
@@ -19,7 +19,7 @@ module.exports.List = async (req, res) => {
         // console.log(error);
     }
 }
-
+/*============================ Add Opening Data =============================*/
 module.exports.Add = async (req, res) => {
     const { comp_id, dept_id, role_id, opening_limit, name, description, experience, created_on, created_by, status } = req.body;
     //const created_on = req.body.created_on ? req.body.created_on :'null';
@@ -38,7 +38,7 @@ module.exports.Add = async (req, res) => {
             created_by: created_by,
             status: status,
         }
-        Openings.createProjectInfo(requestData, (error, opening) => {
+        Openings.createOpeningInfo(requestData, (error, opening) => {
             console.log(opening);
             res.json({ status: true, msg: "Opening data inserted successfully", data: opening });
         });
@@ -47,6 +47,7 @@ module.exports.Add = async (req, res) => {
         res.json({ status: false, msg: "Something went wrong!." });
     }
 }
+/*======================= Edit Opening Data ==================================*/
 module.exports.Edit = async (req, res) => {
 
     try {
@@ -65,6 +66,7 @@ module.exports.Edit = async (req, res) => {
         res.status(204).json({ status: false, msg: "Opening ID not founds !" });
     }
 };
+/*=========================== Update Opening Data ==============================*/
 module.exports.Update = async (req, res) => {
     try {
         let ID = req.body.id;
@@ -90,7 +92,6 @@ module.exports.Update = async (req, res) => {
             }
         });
     } catch (e) {
-        //console.log(e.message);
         res.status(204).json({ status: false, msg: 'Something went wrong!.' });
 
     }

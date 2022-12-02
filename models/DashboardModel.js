@@ -4,9 +4,11 @@ var Dashboard = function (list) {
     this.message = list.message;
     this.status = list.status;
 };
-//get All Dashboard
+/*=============== Get All Dashboard Messages ============================*/
 Dashboard.getAllDashboard = (result) => {
-    dbConn.query('select M.* from tm_message as M ', (err, res) => {
+
+    dbConn.query('select M.id,M.status,M.title,M.message,C.name as CompName from tm_message as M ' +
+        'left join tm_company as C on C.id = M.comp_id ORDER BY M.id desc  ', (err, res) => {
         if (err) {
             console.log(err)
             result(err);
@@ -15,7 +17,7 @@ Dashboard.getAllDashboard = (result) => {
         }
     })
 }
-//get add Dashboard
+/*============================ Add Dashboard Messages ======================================*/
 Dashboard.createMessage = (DashboardReqData, result) => {
 
     var command = 'INSERT INTO tm_message (comp_id,title,message,photo,status,created_on,created_by) VALUES (?,?,?,?,?,?,?)';
@@ -40,7 +42,7 @@ Dashboard.createMessage = (DashboardReqData, result) => {
             }
         })
 };
-//get Message By id
+/*============================== Edit Dashboard message By id =============================*/
 Dashboard.getMessageById = (ID, result) => {
     dbConn.query('select M.* from tm_message as M where M.id ="' + ID + '"', (err, res) => {
         if (err) {
@@ -52,7 +54,7 @@ Dashboard.getMessageById = (ID, result) => {
     })
 };
 
-//get updated Dashboard
+/*===================  updated Dashboard message with attachment ======================*/
 Dashboard.updateDashboardWithIMGInfo = (ID, DashboardReqData, result) => {
     if (ID) {
         var command = 'update tm_message set comp_id = ?,title =?,message = ?, photo = ?,status = ?,updated_on = ?,updated_by = ? where id= ?'
@@ -78,7 +80,7 @@ Dashboard.updateDashboardWithIMGInfo = (ID, DashboardReqData, result) => {
         console.log(err)
     }
 };
-//get updated Dashboard
+/*===================  updated Dashboard message Without attachment ======================*/
 Dashboard.updateDashboardWithoutIMGInfo = (ID, DashboardReqData, result) => {
     if (ID) {
         var command = 'update tm_message set comp_id = ?,title =?,message = ?,status = ?,updated_on = ?,updated_by = ? where id= ?'

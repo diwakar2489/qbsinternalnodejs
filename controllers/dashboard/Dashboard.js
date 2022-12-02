@@ -1,6 +1,6 @@
 var Dashboard = require("../../models/DashboardModel.js");
 var path = require('path');
-
+/*=============== Get All Dashboard Messages ============================*/
 module.exports.DashboardMessage = async (req, res) => {
     try {
         Dashboard.getAllDashboard((error, data) => {
@@ -9,25 +9,23 @@ module.exports.DashboardMessage = async (req, res) => {
 
     } catch (error) {
         res.status(201).json({ status: false, msg: error })
-        // console.log(error);
     }
 }
-
+/*============================ Add Dashboard Messages ======================================*/
 module.exports.addMessage = async (req, res) => {
     try {
-        const { compId, title, message, status, date_formate, userId } = req.body;
-        if (req.files) {
-            let fileName = Date.now() + '_' + req.files.profiles.name;
-            //console.log('fdsfsf'+fileName)
+        const { compId, title, message,profiles, status, date_formate, userId } = req.body;
+        if (profiles) {
 
-            let newPath = path.join(process.cwd(), 'uploads/dashboards', fileName);
-            req.files.profiles.mv(newPath);
-            console.log(req.files);
+            // let fileName = Date.now() + '_' + req.files.profiles.name;
+            // let newPath = path.join(process.cwd(), 'uploads/dashboards', fileName);
+            // req.files.profiles.mv(newPath);
+
             var requestData = {
                 comp_id: compId,
                 title: title,
                 message: message,
-                photo: fileName,
+                photo: profiles,
                 status: status,
                 created_on: date_formate,
                 created_by: userId,
@@ -39,25 +37,21 @@ module.exports.addMessage = async (req, res) => {
                 } else {
                     res.status(201).json({ status: false, msg: "Something Went Wrong" });
                 }
-
             });
 
         } else {
             return res.status(201).json({ status: false, msg: "Image field is required" });
         }
-
-
     } catch (error) {
         res.status(400).json({ status: false, msg: "Something Went Wrong" });
         console.log(error);
     }
 }
-
+/*================================= Edit Dashboard message By id ==================================*/
 module.exports.editMessage = async (req, res) => {
-
     try {
         let ID = req.body.id;
-        console.log(ID)
+
         Dashboard.getMessageById(ID, (error, data) => {
             console.log(data);
             if (data != '') {
@@ -71,23 +65,22 @@ module.exports.editMessage = async (req, res) => {
         res.status(204).json({ status: false, msg: "Dashboard message ID not founds !" });
     }
 };
+/*===================  updated Dashboard message with & Without attachment ======================*/
 module.exports.DashboardMessageUpdate = async (req, res) => {
-    console.log(req.files);
+    
     try {
-        // console.log(req.body);
         let ID = req.body.id;
         let fileName = {};
-        const { compId, title, message, status, date_formate, userId } = req.body;
-        if (req.files) {
-            fileName = Date.now() + '_' + req.files.profiles.name;
-            // console.log('fdsfsf'+fileName)
-            let newPath = path.join(process.cwd(), 'uploads/dashboards', fileName);
-            req.files.profiles.mv(newPath);
+        const { compId, title, message,profiles, status, date_formate, userId } = req.body;
+        if (profiles) {
+            // fileName = Date.now() + '_' + req.files.profiles.name;
+            // let newPath = path.join(process.cwd(), 'uploads/dashboards', fileName);
+            // req.files.profiles.mv(newPath);
             var requestData = {
                 comp_id: compId,
                 title: title,
                 message: message,
-                photo: fileName,
+                photo: profiles,
                 status: status,
                 updated_on: date_formate,
                 updated_by: userId,
@@ -123,8 +116,6 @@ module.exports.DashboardMessageUpdate = async (req, res) => {
         }
 
     } catch (e) {
-        //console.log(e.message);
         res.status(204).json({ status: false, msg: 'Something went wrong!.' });
-
     }
 };
