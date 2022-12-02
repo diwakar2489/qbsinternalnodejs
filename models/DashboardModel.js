@@ -5,10 +5,25 @@ var Dashboard = function (list) {
     this.status = list.status;
 };
 /*=============== Get All Dashboard Messages ============================*/
-Dashboard.getAllDashboard = (result) => {
+Dashboard.getAllDashboard = (pagees, pageSize, total, result) => {
+    const numOfResults = total;
+    const numberOfPages = Math.ceil(numOfResults / pageSize);
+    let page = pagees ? Number(pagees) : 1;
+    const startingLimit = (page - 1) * pageSize;
 
     dbConn.query('select M.id,M.status,M.title,M.message,C.name as CompName from tm_message as M ' +
-        'left join tm_company as C on C.id = M.comp_id ORDER BY M.id desc  ', (err, res) => {
+        'left join tm_company as C on C.id = M.comp_id ORDER BY M.id desc limit ' + startingLimit + ',' + pageSize, (err, res) => {
+        if (err) {
+            console.log(err)
+            result(err);
+        } else {
+            result(null, res);
+        }
+    })
+}
+/*======================== get All count Dashboard ===========================*/
+Dashboard.countDashboardMessages = (result) => {
+    dbConn.query('select COUNT(M.id) as Total from tm_message as M ', (err, res) => {
         if (err) {
             console.log(err)
             result(err);

@@ -3,8 +3,19 @@ var path = require('path');
 /*=============== Get All Dashboard Messages ============================*/
 module.exports.DashboardMessage = async (req, res) => {
     try {
-        Dashboard.getAllDashboard((error, data) => {
-            res.status(200).json({ status: true, msg: 'Dashboard message successfully', result: data });
+        const pageSize = 2;
+        const page = parseInt(req.query.page) || 1;
+        const skip = (page - 1) * pageSize;
+        Dashboard.countDashboardMessages((error1, total) => {
+            Dashboard.getAllDashboard(page,pageSize,total,(error, data) => {
+                res.status(200).json({ 
+                    status: true,
+                    msg: 'Dashboard message successfully',
+                    TotalRecords:total, 
+                    page_no:page, 
+                    limit:pageSize,
+                    result: data });
+            });
         });
 
     } catch (error) {
@@ -14,7 +25,7 @@ module.exports.DashboardMessage = async (req, res) => {
 /*============================ Add Dashboard Messages ======================================*/
 module.exports.addMessage = async (req, res) => {
     try {
-        const { compId, title, message,profiles, status, date_formate, userId } = req.body;
+        const { compId, title, message, profiles, status, date_formate, userId } = req.body;
         if (profiles) {
 
             // let fileName = Date.now() + '_' + req.files.profiles.name;
@@ -67,11 +78,11 @@ module.exports.editMessage = async (req, res) => {
 };
 /*===================  updated Dashboard message with & Without attachment ======================*/
 module.exports.DashboardMessageUpdate = async (req, res) => {
-    
+
     try {
         let ID = req.body.id;
         let fileName = {};
-        const { compId, title, message,profiles, status, date_formate, userId } = req.body;
+        const { compId, title, message, profiles, status, date_formate, userId } = req.body;
         if (profiles) {
             // fileName = Date.now() + '_' + req.files.profiles.name;
             // let newPath = path.join(process.cwd(), 'uploads/dashboards', fileName);
