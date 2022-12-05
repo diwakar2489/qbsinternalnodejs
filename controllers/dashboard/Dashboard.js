@@ -66,7 +66,7 @@ module.exports.editMessage = async (req, res) => {
         Dashboard.getMessageById(ID, (error, data) => {
             console.log(data);
             if (data != '') {
-                res.status(200).json({ status: true, msg: "Dashboard Message Data fatch successfully", result: data });
+                res.status(200).json({ status: true, msg: "Dashboard Message Data fatch successfully", result: data[0] });
             } else {
                 res.status(201).json({ status: false, msg: "Dashboard Message ID not founds !" });
 
