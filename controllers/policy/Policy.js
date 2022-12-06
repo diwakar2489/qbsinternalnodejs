@@ -1,15 +1,15 @@
-var Forms = require('../../models/FormsModel');
+var Policy = require('../../models/PolicyModel');
 
-/*=============== Get All forms ============================*/
-module.exports.getAllForms = (req, res) => {
+/*=============== Get All Policy ============================*/
+module.exports.getAllPolicy = (req, res) => {
     try {
         const pageSize = 2;
         const page = parseInt(req.query.page) || 1;
-        Forms.countFormsMessages((error1, total) => {
-            Forms.getAllForms(page, pageSize, (error, data) => {
+        Policy.countPolicyMessages((error1, total) => {
+            Policy.getAllPolicy(page, pageSize, (error, data) => {
                 res.status(200).json({
                     status: true,
-                    msg: 'Forms message successfully',
+                    msg: 'Policy message successfully',
                     TotalRecords: total,
                     page_no: page,
                     limit: pageSize,
@@ -22,8 +22,8 @@ module.exports.getAllForms = (req, res) => {
         res.status(201).json({ status: false, msg: error })
     }
 }
-/*============================ Add Forms ======================================*/
-module.exports.addForms = async (req, res) => {
+/*============================ Add Policy ======================================*/
+module.exports.addPolicy = async (req, res) => {
     try {
         const { compId, title, message, attachment, status, date_formate, userId } = req.body;
         if (attachment) {
@@ -37,10 +37,10 @@ module.exports.addForms = async (req, res) => {
                 created_on: date_formate,
                 created_by: userId,
             }
-            Forms.createForms(requestData, (error, message) => {
+            Policy.createPolicy(requestData, (error, message) => {
                 console.log(message);
                 if (message) {
-                    res.status(200).json({ status: true, msg: "Forms data inserted successfully", data: message });
+                    res.status(200).json({ status: true, msg: "Policy data inserted successfully", data: message });
                 } else {
                     res.status(201).json({ status: false, msg: "Something Went Wrong" });
                 }
@@ -57,26 +57,26 @@ module.exports.addForms = async (req, res) => {
         console.log(error);
     }
 };
-/*================================= Edit Fomrs By id ==================================*/
-module.exports.editFormsMessage = async (req, res) => {
+/*================================= Edit Policy By id ==================================*/
+module.exports.editPolicyMessage = async (req, res) => {
     try {
         let ID = req.body.id;
 
-        Forms.getFormsMessageById(ID, (error, data) => {
+        Policy.getPolicyMessageById(ID, (error, data) => {
             console.log(data);
             if (data != '') {
-                res.status(200).json({ status: true, msg: "Fomrs Message Data fatch successfully", result: data[0] });
+                res.status(200).json({ status: true, msg: "Policy Message Data fatch successfully", result: data[0] });
             } else {
-                res.status(201).json({ status: false, msg: "Fomrs Message ID not founds !" });
+                res.status(201).json({ status: false, msg: "Policy Message ID not founds !" });
 
             }
         });
     } catch (e) {
-        res.status(204).json({ status: false, msg: "Fomrs message ID not founds !" });
+        res.status(204).json({ status: false, msg: "Policy message ID not founds !" });
     }
 };
-/*======================================  updated Fomrs with & Without attachment ==================================================*/
-module.exports.FormsMessageUpdate = async (req, res) => {
+/*======================================  updated Policy with & Without attachment ==================================================*/
+module.exports.PolicyMessageUpdate = async (req, res) => {
 
     try {
         let ID = req.body.id;
@@ -92,13 +92,13 @@ module.exports.FormsMessageUpdate = async (req, res) => {
                 updated_on: date_formate,
                 updated_by: userId,
             }
-            Forms.updateFormsWithIMGInfo(ID, requestData, (error, data) => {
+            Policy.updatePolicyWithIMGInfo(ID, requestData, (error, data) => {
                 console.log(data);
                 if (data.affectedRows > 0) {
 
-                    res.status(200).json({ status: true, msg: 'Update Forms message successfully', result: data });
+                    res.status(200).json({ status: true, msg: 'Update Policy message successfully', result: data });
                 } else {
-                    res.status(201).json({ status: false, msg: 'Error for Update Forms message Id=' + ID });
+                    res.status(201).json({ status: false, msg: 'Error for Update Policy message Id=' + ID });
                 }
             });
 
@@ -111,13 +111,13 @@ module.exports.FormsMessageUpdate = async (req, res) => {
                 updated_on: date_formate,
                 updated_by: userId,
             }
-            Forms.updateFormsWithoutIMGInfo(ID, requestData, (error, data) => {
+            Policy.updatePolicyWithoutIMGInfo(ID, requestData, (error, data) => {
                 console.log(data);
                 if (data.affectedRows > 0) {
 
-                    res.status(200).json({ status: true, msg: 'Update Forms message successfully', result: data });
+                    res.status(200).json({ status: true, msg: 'Update Policy message successfully', result: data });
                 } else {
-                    res.status(201).json({ status: false, msg: 'Error for Update Forms message Id=' + ID });
+                    res.status(201).json({ status: false, msg: 'Error for Update Policy message Id=' + ID });
                 }
             });
         }

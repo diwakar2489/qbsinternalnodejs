@@ -57,6 +57,14 @@ router.post('/add_forms',verifyToken,addForms);
 router.post('/edit_forms',verifyToken,editFormsMessage);
 router.put('/update_forms',verifyToken,FormsMessageUpdate);
 
+/*=================== Policy routers =====================*/
+var { getAllPolicy, addPolicy, editPolicyMessage, PolicyMessageUpdate} = require('../controllers/policy/Policy.js');
+
+router.get('/policy',verifyToken,getAllPolicy);
+router.post('/add_policy',verifyToken,addPolicy);
+router.post('/edit_policy',verifyToken,editPolicyMessage);
+router.put('/update_policy',verifyToken,PolicyMessageUpdate);
+
 /*=================== Job Opening routers =====================*/
 var { List,Add,Edit,Update } = require("../controllers/openings/Opening.js");
 

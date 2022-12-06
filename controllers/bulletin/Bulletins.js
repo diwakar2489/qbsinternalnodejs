@@ -70,7 +70,7 @@ module.exports.editBulletinMessage = async (req, res) => {
         Bulletins.getBulletinMessageById(ID, (error, data) => {
             console.log(data);
             if (data != '') {
-                res.status(200).json({ status: true, msg: "Bulletin Message Data fatch successfully", result: data });
+                res.status(200).json({ status: true, msg: "Bulletin Message Data fatch successfully", result: data[0] });
             } else {
                 res.status(201).json({ status: false, msg: "Bulletin Message ID not founds !" });
 
