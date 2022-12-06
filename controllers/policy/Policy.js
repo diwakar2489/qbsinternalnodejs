@@ -1,5 +1,5 @@
 var Policy = require('../../models/PolicyModel');
-
+var path = require('path');
 /*=============== Get All Policy ============================*/
 module.exports.searchData = (req, res) => {
     try {
@@ -48,14 +48,16 @@ module.exports.getAllPolicy = (req, res) => {
 /*============================ Add Policy ======================================*/
 module.exports.addPolicy = async (req, res) => {
     try {
-        const { compId, title, message, attachment, status, created_on, created_by } = req.body;
-        if (attachment) {
-
+        const { compId, title, message, status, created_on, created_by } = req.body;
+        if (req.files) {
+            let fileName = Date.now() + '_' + req.files.attachment.name;
+            let newPath = path.join(process.cwd(), 'uploads/policys', fileName);
+            req.files.attachment.mv(newPath);
             var requestData = {
                 comp_id: compId,
                 title: title,
                 message: message,
-                attachment: attachment,
+                attachment: fileName,
                 status: status,
                 created_on: created_on,
                 created_by: created_by,
