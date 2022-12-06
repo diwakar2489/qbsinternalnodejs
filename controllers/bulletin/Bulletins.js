@@ -86,7 +86,7 @@ module.exports.BulletinMessageUpdate = async (req, res) => {
     try {
         let ID = req.body.id;
         let fileName = {};
-        const { compId, title, message,attachment, status, date_formate, userId } = req.body;
+        const { compId, title, message,attachment, status, updated_on, updated_by } = req.body;
         if (attachment) {
             // fileName = Date.now() + '_' + req.files.attachment.name;
             // let newPath = path.join(process.cwd(), 'uploads/bulletins', fileName);
@@ -97,8 +97,8 @@ module.exports.BulletinMessageUpdate = async (req, res) => {
                 message: message,
                 attachment: attachment,
                 status: status,
-                updated_on: date_formate,
-                updated_by: userId,
+                updated_on: updated_on,
+                updated_by: updated_by,
             }
             Bulletins.updateBulletinWithIMGInfo(ID, requestData, (error, data) => {
                 console.log(data);
@@ -116,8 +116,8 @@ module.exports.BulletinMessageUpdate = async (req, res) => {
                 title: title,
                 message: message,
                 status: status,
-                updated_on: date_formate,
-                updated_by: userId,
+                updated_on: updated_on,
+                updated_by: updated_by,
             }
             Bulletins.updateBulletinWithoutIMGInfo(ID, requestData, (error, data) => {
                 console.log(data);

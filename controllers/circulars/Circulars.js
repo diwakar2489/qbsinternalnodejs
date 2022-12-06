@@ -27,7 +27,7 @@ module.exports.getAllCirculars = (req, res) => {
 module.exports.addCircular = async (req, res) => {
     console.log(req.files);
     try {
-        const { compId, title, message,attachment, status, date_formate, userId } = req.body;
+        const { compId, title, message,attachment, status, created_on, created_by } = req.body;
         if (attachment) {
             // let fileName = Date.now() + '_' + req.files.attachment.name;
 
@@ -39,8 +39,8 @@ module.exports.addCircular = async (req, res) => {
                 message: message,
                 attachment: attachment,
                 status: status,
-                created_on: date_formate,
-                created_by: userId,
+                created_on: created_on,
+                created_by: created_by,
             }
             Circulars.createCircular(requestData, (error, message) => {
                 console.log(message);
@@ -86,7 +86,7 @@ module.exports.CircularMessageUpdate = async (req, res) => {
     try {
         let ID = req.body.id;
         //let fileName = {};
-        const { compId, title, message,attachment, status, date_formate, userId } = req.body;
+        const { compId, title, message,attachment, status, updated_on, updated_by } = req.body;
         if (attachment) {
             // fileName = Date.now() + '_' + req.files.attachment.name;
             // let newPath = path.join(process.cwd(), 'uploads/circulars', fileName);
@@ -97,8 +97,8 @@ module.exports.CircularMessageUpdate = async (req, res) => {
                 message: message,
                 attachment: attachment,
                 status: status,
-                updated_on: date_formate,
-                updated_by: userId,
+                updated_on: updated_on,
+                updated_by: updated_by,
             }
             Circulars.updateCircularWithIMGInfo(ID, requestData, (error, data) => {
                 console.log(data);
@@ -116,8 +116,8 @@ module.exports.CircularMessageUpdate = async (req, res) => {
                 title: title,
                 message: message,
                 status: status,
-                updated_on: date_formate,
-                updated_by: userId,
+                updated_on: updated_on,
+                updated_by: updated_by,
             }
             Circulars.updateCircularWithoutIMGInfo(ID, requestData, (error, data) => {
                 console.log(data);

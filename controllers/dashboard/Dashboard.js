@@ -25,7 +25,7 @@ module.exports.DashboardMessage = async (req, res) => {
 /*============================ Add Dashboard Messages ======================================*/
 module.exports.addMessage = async (req, res) => {
     try {
-        const { compId, title, message, profiles, status, date_formate, userId } = req.body;
+        const { compId, title, message, profiles, status, created_on, created_by } = req.body;
         if (profiles) {
 
             // let fileName = Date.now() + '_' + req.files.profiles.name;
@@ -38,8 +38,8 @@ module.exports.addMessage = async (req, res) => {
                 message: message,
                 photo: profiles,
                 status: status,
-                created_on: date_formate,
-                created_by: userId,
+                created_on: created_on,
+                created_by: created_by,
             }
             Dashboard.createMessage(requestData, (error, message) => {
                 console.log(message);
@@ -82,7 +82,7 @@ module.exports.DashboardMessageUpdate = async (req, res) => {
     try {
         let ID = req.body.id;
         let fileName = {};
-        const { compId, title, message, profiles, status, date_formate, userId } = req.body;
+        const { compId, title, message, profiles, status, updated_on, updated_by } = req.body;
         if (profiles) {
             // fileName = Date.now() + '_' + req.files.profiles.name;
             // let newPath = path.join(process.cwd(), 'uploads/dashboards', fileName);
@@ -93,8 +93,8 @@ module.exports.DashboardMessageUpdate = async (req, res) => {
                 message: message,
                 photo: profiles,
                 status: status,
-                updated_on: date_formate,
-                updated_by: userId,
+                updated_on: updated_on,
+                updated_by: updated_by,
             }
             Dashboard.updateDashboardWithIMGInfo(ID, requestData, (error, data) => {
                 console.log(data);
@@ -112,8 +112,8 @@ module.exports.DashboardMessageUpdate = async (req, res) => {
                 title: title,
                 message: message,
                 status: status,
-                updated_on: date_formate,
-                updated_by: userId,
+                updated_on: updated_on,
+                updated_by: updated_by,
             }
             Dashboard.updateDashboardWithoutIMGInfo(ID, requestData, (error, data) => {
                 console.log(data);
