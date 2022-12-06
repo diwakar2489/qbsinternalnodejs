@@ -6,8 +6,22 @@ var Circular = function (list) {
     this.status = list.status;
 };
 /*=============== Get All Circular ============================*/
-Circular.getAllCircular = (result) => {
-    dbConn.query('select C.* from tm_circulars as C ', (err, res) => {
+Circular.getAllCircular = (pagees, pageSize,result) => {
+    let page = pagees ? Number(pagees) : 1;
+    const startingLimit = (page - 1) * pageSize;
+    dbConn.query('select C.id,C.bulletin_attachment,C.status,C.title,C.message,Cm.name as CompName from tm_circulars as C ' +
+    'left join tm_company as Cm on Cm.id = C.comp_id ORDER BY C.id desc limit ' + startingLimit + ',' + pageSize, (err, res) => {
+        if (err) {
+            console.log(err)
+            result(err);
+        } else {
+            result(null, res);
+        }
+    })
+}
+/*======================== get All count Circular ===========================*/
+Circular.countCircularsMessages = (result) => {
+    dbConn.query('select COUNT(C.id) as Total from tm_circulars as C ', (err, res) => {
         if (err) {
             console.log(err)
             result(err);

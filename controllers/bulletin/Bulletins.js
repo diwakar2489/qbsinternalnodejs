@@ -4,8 +4,19 @@ var path = require('path');
 /*=============== Get All Bulletin ============================*/
 module.exports.getAllBulletins = (req, res) => {
     try {
-        Bulletins.getAllBulletin((error, data) => {
-            res.status(200).json({ status: true, msg: 'Bulletin message successfully', result: data });
+        const pageSize = 2;
+        const page = parseInt(req.query.page) || 1;
+        Bulletins.countBulletinsMessages((error1, total) => {
+            Bulletins.getAllBulletin(page, pageSize, (error, data) => {
+                res.status(200).json({
+                    status: true,
+                    msg: 'Bulletin message successfully',
+                    TotalRecords: total,
+                    page_no: page,
+                    limit: pageSize,
+                    result: data
+                });
+            });
         });
 
     } catch (error) {
@@ -14,19 +25,19 @@ module.exports.getAllBulletins = (req, res) => {
 }
 /*============================ Add Bulletin ======================================*/
 module.exports.addBulletin = async (req, res) => {
-    console.log(req.files);
+    //console.log(req.files);
     try {
-        const { compId, title, message, status, date_formate, userId } = req.body;
-        if (req.files) {
-            let fileName = Date.now() + '_' + req.files.attachment.name;
+        const { compId, title, message,attachment, status, date_formate, userId } = req.body;
+        if (attachment) {
+            // let fileName = Date.now() + '_' + req.files.attachment.name;
 
-            let newPath = path.join(process.cwd(), 'uploads/bulletins', fileName);
-            req.files.attachment.mv(newPath);
+            // let newPath = path.join(process.cwd(), 'uploads/bulletins', fileName);
+            // req.files.attachment.mv(newPath);
             var requestData = {
                 comp_id: compId,
                 title: title,
                 message: message,
-                attachment: fileName,
+                attachment: attachment,
                 status: status,
                 created_on: date_formate,
                 created_by: userId,
@@ -71,20 +82,20 @@ module.exports.editBulletinMessage = async (req, res) => {
 };
 /*======================================  updated Bulletin with & Without attachment ==================================================*/
 module.exports.BulletinMessageUpdate = async (req, res) => {
-    console.log(req.files);
+  //  console.log(req.files);
     try {
         let ID = req.body.id;
         let fileName = {};
-        const { compId, title, message, status, date_formate, userId } = req.body;
-        if (req.files) {
-            fileName = Date.now() + '_' + req.files.attachment.name;
-            let newPath = path.join(process.cwd(), 'uploads/bulletins', fileName);
-            req.files.attachment.mv(newPath);
+        const { compId, title, message,attachment, status, date_formate, userId } = req.body;
+        if (attachment) {
+            // fileName = Date.now() + '_' + req.files.attachment.name;
+            // let newPath = path.join(process.cwd(), 'uploads/bulletins', fileName);
+            // req.files.attachment.mv(newPath);
             var requestData = {
                 comp_id: compId,
                 title: title,
                 message: message,
-                attachment: fileName,
+                attachment: attachment,
                 status: status,
                 updated_on: date_formate,
                 updated_by: userId,
