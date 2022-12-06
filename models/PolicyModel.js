@@ -5,6 +5,20 @@ var Policy = function (list) {
     this.message = list.message;
     this.status = list.status;
 };
+/*=============== Get Search All Policy ============================*/
+Policy.getAllSearchPolicy = (search, pagees, pageSize,result) => {
+    let page = pagees ? Number(pagees) : 1;
+    const startingLimit = (page - 1) * pageSize;
+    dbConn.query('select P.id,P.policy_attachment as img,P.status,P.title,P.message,Cm.name as company from tm_policy as P ' +
+    'left join tm_company as Cm on Cm.id = P.comp_id where P.title LIKE "%' + search + '%" ORDER BY P.id desc limit ' + startingLimit + ',' + pageSize, (err, res) => {
+        if (err) {
+            console.log(err)
+            result(err);
+        } else {
+            result(null, res);
+        }
+    })
+}
 /*=============== Get All Policy ============================*/
 Policy.getAllPolicy = (pagees, pageSize,result) => {
     let page = pagees ? Number(pagees) : 1;

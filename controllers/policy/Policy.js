@@ -1,6 +1,29 @@
 var Policy = require('../../models/PolicyModel');
 
 /*=============== Get All Policy ============================*/
+module.exports.searchData = (req, res) => {
+    try {
+        const pageSize = 2;
+        const search = req.query.query || 'test';
+        const page = parseInt(req.query.page) || 1;
+        Policy.countPolicyMessages((error1, total) => {
+            Policy.getAllSearchPolicy(search,page, pageSize, (error, data) => {
+                res.status(200).json({
+                    status: true,
+                    msg: 'Policy message successfully',
+                    nbPages: total[0].Total,
+                    page_no: page,
+                    limit: pageSize,
+                    hits: data
+                });
+            });
+        });
+
+    } catch (error) {
+        res.status(201).json({ status: false, msg: error })
+    }
+}
+/*=============== Get All Policy ============================*/
 module.exports.getAllPolicy = (req, res) => {
     try {
         const pageSize = 2;

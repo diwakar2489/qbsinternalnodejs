@@ -9,7 +9,7 @@ var Circular = function (list) {
 Circular.getAllCircular = (pagees, pageSize,result) => {
     let page = pagees ? Number(pagees) : 1;
     const startingLimit = (page - 1) * pageSize;
-    dbConn.query('select C.id,C.bulletin_attachment as img,C.status,C.title,C.message,Cm.name as company from tm_circulars as C ' +
+    dbConn.query('select C.id,C.circular_attachment as img,C.status,C.title,C.message,Cm.name as company from tm_circulars as C ' +
     'left join tm_company as Cm on Cm.id = C.comp_id ORDER BY C.id desc limit ' + startingLimit + ',' + pageSize, (err, res) => {
         if (err) {
             console.log(err)

@@ -58,8 +58,9 @@ router.post('/edit_forms',verifyToken,editFormsMessage);
 router.put('/update_forms',verifyToken,FormsMessageUpdate);
 
 /*=================== Policy routers =====================*/
-var { getAllPolicy, addPolicy, editPolicyMessage, PolicyMessageUpdate} = require('../controllers/policy/Policy.js');
+var { searchData, getAllPolicy, addPolicy, editPolicyMessage, PolicyMessageUpdate} = require('../controllers/policy/Policy.js');
 
+router.get('/search',searchData);
 router.get('/policy',verifyToken,getAllPolicy);
 router.post('/add_policy',verifyToken,addPolicy);
 router.post('/edit_policy',verifyToken,editPolicyMessage);
