@@ -49,6 +49,13 @@ router.post('/add_circular',verifyToken,addCircular);
 router.post('/edit_circular',verifyToken,editCircularMessage);
 router.put('/update_circular',verifyToken,CircularMessageUpdate);
 
+/*=================== Forms routers =====================*/
+var { getAllForms, addForms, editFormsMessage, FormsMessageUpdate} = require('../controllers/forms/Forms.js');
+
+router.get('/forms',verifyToken,getAllForms);
+router.post('/add_forms',verifyToken,addForms);
+router.post('/edit_forms',verifyToken,editFormsMessage);
+router.put('/update_forms',verifyToken,FormsMessageUpdate);
 
 /*=================== Job Opening routers =====================*/
 var { List,Add,Edit,Update } = require("../controllers/openings/Opening.js");

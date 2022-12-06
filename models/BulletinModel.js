@@ -11,7 +11,7 @@ Bulletin.getAllBulletin = (pagees, pageSize,result) => {
     let page = pagees ? Number(pagees) : 1;
     const startingLimit = (page - 1) * pageSize;
 
-    dbConn.query('select B.id,B.bulletin_attachment,B.status,B.title,B.message,C.name as CompName from tm_bulletin as B ' +
+    dbConn.query('select B.id,B.bulletin_attachment as img,B.status,B.title,B.message,C.name as company from tm_bulletin as B ' +
     'left join tm_company as C on C.id = B.comp_id ORDER BY B.id desc limit ' + startingLimit + ',' + pageSize, (err, res) => {
         if (err) {
             console.log(err)
