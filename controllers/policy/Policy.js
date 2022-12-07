@@ -4,15 +4,15 @@ var path = require('path');
 module.exports.searchData = (req, res) => {
     try {
         const pageSize = 2;
-        const search = req.query.query || 'test';
-        const page = parseInt(req.query.page) || 1;
+        const search = req.query.query || '' ;
+        const page = parseInt(req.query.page);
         Policy.countPolicyMessages((error1, total) => {
             Policy.getAllSearchPolicy(search,page, pageSize, (error, data) => {
                 res.status(200).json({
                     status: true,
                     msg: 'Policy message successfully',
                     nbPages: total[0].Total,
-                    page_no: page,
+                    page: page,
                     limit: pageSize,
                     hits: data
                 });

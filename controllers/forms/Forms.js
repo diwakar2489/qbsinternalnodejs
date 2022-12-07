@@ -25,14 +25,17 @@ module.exports.getAllForms = (req, res) => {
 /*============================ Add Forms ======================================*/
 module.exports.addForms = async (req, res) => {
     try {
-        const { compId, title, message, attachment, status, created_on, created_by } = req.body;
-        if (attachment) {
+        const { compId, title, message, status, created_on, created_by } = req.body;
+        if (req.files) {
+            let fileName = Date.now() + '_' + req.files.attachment.name;
+            let newPath = path.join(process.cwd(), 'uploads/forms', fileName);
+            req.files.attachment.mv(newPath);
 
             var requestData = {
                 comp_id: compId,
                 title: title,
                 message: message,
-                attachment: attachment,
+                attachment: fileName,
                 status: status,
                 created_on: created_on,
                 created_by: created_by,
@@ -80,14 +83,16 @@ module.exports.FormsMessageUpdate = async (req, res) => {
 
     try {
         let ID = req.body.id;
-        const { compId, title, message, attachment, status, updated_on, updated_by } = req.body;
-        if (attachment) {
-
+        const { compId, title, message, status, updated_on, updated_by } = req.body;
+        if (req.files) {
+            let fileName = Date.now() + '_' + req.files.attachment.name;
+            let newPath = path.join(process.cwd(), 'uploads/forms', fileName);
+            req.files.attachment.mv(newPath);
             var requestData = {
                 comp_id: compId,
                 title: title,
                 message: message,
-                attachment: attachment,
+                attachment: fileName,
                 status: status,
                 updated_on: updated_on,
                 updated_by: updated_by,
