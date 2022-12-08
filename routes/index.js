@@ -78,7 +78,7 @@ var { List,Add,Edit,Update } = require("../controllers/openings/Opening.js");
 
 router.get('/opening', verifyToken, List);
 router.post('/add_opening',verifyToken,Add);
-router.post('/edit',verifyToken,Edit);
+router.post('/edit_opening',verifyToken,Edit);
 router.put('/update_opening',verifyToken,Update);
 
 /*=================== Common List routers =====================*/
