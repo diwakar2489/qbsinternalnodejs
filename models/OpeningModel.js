@@ -8,6 +8,19 @@ var Openings = function (list) {
     this.description = list.description;
     this.status = list.status;
 };
+/*======================== get Openings Dashboard List ===========================*/
+Openings.dashboardOpeningsList = (pagees, pageSize,result) => {
+    let page = pagees ? Number(pagees) : 1;
+    const startingLimit = (page - 1) * pageSize;
+    dbConn.query('select O.id,O.opening_limit,O.experience,O.status,O.name as title,O.created_on from tm_opening as O where O.status = 1 order by O.id desc limit ' + startingLimit + ',' + pageSize, (err, res) => {
+        if (err) {
+            console.log(err)
+            result(err);
+        } else {
+            result(null, res);
+        }
+    })
+}
 /*========================== Get All Openings ========================*/
 Openings.getAllOpenings = (pagees, pageSize, total, result) => {
     const numOfResults = total;

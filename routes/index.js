@@ -26,17 +26,19 @@ router.post('/otp-verify', verifyOtp);
 router.put('/change-password', changePassword);
 
 /*=================== Dashboard routers =====================*/
-var {DashboardUserMessage, DashboardFormsList} = require("../controllers/dashboard/Dashboard");
+var {DashboardUserMessage, DashboardFormsList, DashboardOpeningList, DashboardCircularList} = require("../controllers/dashboard/Dashboard");
 
-router.get('/dashboard_messages',DashboardUserMessage);
-router.get('/dashboard_forms',DashboardFormsList);
+router.get('/dashboard_messages',verifyToken, DashboardUserMessage);
+router.get('/dashboard_forms',verifyToken, DashboardFormsList);
+router.get('/dashboard_opening',verifyToken, DashboardOpeningList);
+router.get('/dashboard_circular',verifyToken, DashboardCircularList);
 /*=================== Dashboard Message routers =====================*/
 var {DashboardMessage,addMessage,editMessage,DashboardMessageUpdate} = require("../controllers/dashboard/Dashboard_message");
 
-router.get('/messages',DashboardMessage);
-router.post('/add_messages',verifyToken,addMessage);
-router.post('/edit_messages',verifyToken,editMessage);
-router.put('/update_messages',verifyToken,DashboardMessageUpdate);
+router.get('/messages',verifyToken, DashboardMessage);
+router.post('/add_messages',verifyToken, addMessage);
+router.post('/edit_messages',verifyToken, editMessage);
+router.put('/update_messages',verifyToken, DashboardMessageUpdate);
 
 /*=================== Bulletin routers =====================*/
 var { getAllBulletins, addBulletin, editBulletinMessage, BulletinMessageUpdate} = require('../controllers/bulletin/Bulletins.js');

@@ -5,6 +5,19 @@ var Circular = function (list) {
     this.message = list.message;
     this.status = list.status;
 };
+/*======================== get Dashboard Circular List ===========================*/
+Circular.dashboardCircularList = (pagees, pageSize,result) => {
+    let page = pagees ? Number(pagees) : 1;
+    const startingLimit = (page - 1) * pageSize;
+    dbConn.query('select C.id,C.circular_attachment as img,C.status,C.title,C.created_on from tm_circulars as C ORDER BY C.id desc limit ' + startingLimit + ',' + pageSize, (err, res) => {
+        if (err) {
+            console.log(err)
+            result(err);
+        } else {
+            result(null, res);
+        }
+    })
+}
 /*=============== Get All Circular ============================*/
 Circular.getAllCircular = (pagees, pageSize,result) => {
     let page = pagees ? Number(pagees) : 1;

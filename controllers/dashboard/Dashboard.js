@@ -1,27 +1,80 @@
 var Dashboard = require("../../models/DashboardModel.js");
 var Forms = require("../../models/FormsModel.js");
+var Opening = require("../../models/OpeningModel.js");
+var Circular = require("../../models/CircularModel.js");
 
-/*======================== Get Dashboard Data List========================*/
+/*======================== Get Dashboard Message Data List========================*/
 module.exports.DashboardUserMessage = async (req, res) => {
     try {
         Dashboard.getDashboardUserMessage((error, data) => {
-            res.status(200).json({ 
+            res.status(200).json({
                 status: true,
-                msg: 'Dashboard User Data fetch successfully',
-                result: data });
+                msg: 'User Dashboard Message Data fetch successfully',
+                result: data
+            });
         });
     } catch (error) {
         res.status(201).json({ status: false, msg: error })
     }
 }
-/*======================== Get Dashboard Data List========================*/
+/*======================== Get Dashboard Forms Data List========================*/
 module.exports.DashboardFormsList = async (req, res) => {
     try {
-        Forms.getDashboardFormsData((error, data) => {
-            res.status(200).json({ 
-                status: true,
-                msg: 'Dashboard User Form Data fetch successfully',
-                result: data });
+        const pageSize = 2;
+        const page = parseInt(req.query.page);
+        Forms.countFormsMessages((error1, total) => {
+            Forms.getDashboardFormsData(page, pageSize,(error, data) => {
+                res.status(200).json({
+                    status: true,
+                    msg: 'User Dashboard Form Data fetch successfully',
+                    nbPages: total[0].Total,
+                    page: page,
+                    limit: pageSize,
+                    result: data
+                });
+            });
+        });
+    } catch (error) {
+        res.status(201).json({ status: false, msg: error })
+    }
+}
+/*======================== Get Dashboard Opening Data List========================*/
+module.exports.DashboardOpeningList = async (req, res) => {
+    try {
+        const pageSize = 2;
+        const page = parseInt(req.query.page);
+        Opening.countOpenings((error1, total) => {
+            Opening.dashboardOpeningsList(page, pageSize,(error, data) => {
+                res.status(200).json({
+                    status: true,
+                    msg: 'User Dashboard Message Data fetch successfully',
+                    nbPages: total[0].Total,
+                    page: page,
+                    limit: pageSize,
+                    result: data
+                });
+            });
+        });
+    } catch (error) {
+        res.status(201).json({ status: false, msg: error })
+    }
+}
+/*======================== Get Dashboard Circular Data List========================*/
+module.exports.DashboardCircularList = async (req, res) => {
+    try {
+        const pageSize = 2;
+        const page = parseInt(req.query.page);
+        Circular.countCircularsMessages((error1, total) => {
+            Circular.dashboardCircularList(page, pageSize,(error, data) => {
+                res.status(200).json({
+                    status: true,
+                    msg: 'User Dashboard Circular Data fetch successfully',
+                    nbPages: total[0].Total,
+                    page: page,
+                    limit: pageSize,
+                    result: data
+                });
+            });
         });
     } catch (error) {
         res.status(201).json({ status: false, msg: error })

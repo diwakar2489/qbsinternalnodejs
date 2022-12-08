@@ -6,8 +6,10 @@ var Forms = function (list) {
     this.status = list.status;
 };
 /*======================== get Users Forms Dashboard ===========================*/
-Forms.getDashboardFormsData = (result) => {
-    dbConn.query('select F.id,F.title,F.created_on,F.form_attachment as img from tm_forms as F where F.status = 1 order by F.id desc limit 3', (err, res) => {
+Forms.getDashboardFormsData = (pagees, pageSize,result) => {
+    let page = pagees ? Number(pagees) : 1;
+    const startingLimit = (page - 1) * pageSize;
+    dbConn.query('select F.id,F.title,F.created_on,F.form_attachment as img from tm_forms as F where F.status = 1 order by F.id desc limit ' + startingLimit + ',' + pageSize, (err, res) => {
         if (err) {
             console.log(err)
             result(err);
