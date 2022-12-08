@@ -1,5 +1,18 @@
 var Dashboard = require("../../models/DashboardModel.js");
 var path = require('path');
+/*======================== Get Dashboard Data List========================*/
+module.exports.DashboardUserMessage = async (req, res) => {
+    try {
+        Dashboard.getDashboardUserMessage((error, data) => {
+            res.status(200).json({ 
+                status: true,
+                msg: 'Dashboard User message successfully',
+                result: data });
+        });
+    } catch (error) {
+        res.status(201).json({ status: false, msg: error })
+    }
+}
 /*=============== Get All Dashboard Messages ============================*/
 module.exports.DashboardMessage = async (req, res) => {
     try {

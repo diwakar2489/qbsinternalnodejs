@@ -4,6 +4,17 @@ var Dashboard = function (list) {
     this.message = list.message;
     this.status = list.status;
 };
+/*======================== get Dashboard User Message  ===========================*/
+Dashboard.getDashboardUserMessage = (result) => {
+    dbConn.query('select M.id,M.title,M.created_on,M.photo as img from tm_message as M order by M.id desc limit 3', (err, res) => {
+        if (err) {
+            console.log(err)
+            result(err);
+        } else {
+            result(null, res);
+        }
+    })
+}
 /*=============== Get All Dashboard Messages ============================*/
 Dashboard.getAllDashboard = (pagees, pageSize, total, result) => {
     const numOfResults = total;

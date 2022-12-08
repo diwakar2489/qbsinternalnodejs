@@ -26,8 +26,9 @@ router.post('/otp-verify', verifyOtp);
 router.put('/change-password', changePassword);
 
 /*=================== Dashboard routers =====================*/
-var {DashboardMessage,addMessage,editMessage,DashboardMessageUpdate} = require("../controllers/dashboard/Dashboard");
+var {DashboardUserMessage,DashboardMessage,addMessage,editMessage,DashboardMessageUpdate} = require("../controllers/dashboard/Dashboard");
 
+router.get('/dashboard_messages',DashboardUserMessage);
 router.get('/messages',DashboardMessage);
 router.post('/add_messages',verifyToken,addMessage);
 router.post('/edit_messages',verifyToken,editMessage);
