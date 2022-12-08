@@ -56,7 +56,7 @@ module.exports.Edit = async (req, res) => {
         Openings.getOpeningsById(ID, (error, data) => {
             console.log(data);
             if (data != '') {
-                res.status(200).json({ status: true, msg: "Opening Data fatch successfully", opening: data });
+                res.status(200).json({ status: true, msg: "Opening Data fatch successfully", opening: data[0] });
             } else {
                 res.status(201).json({ status: false, msg: "Opening not founds !" });
 
