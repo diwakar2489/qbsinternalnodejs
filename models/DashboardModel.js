@@ -6,7 +6,7 @@ var Dashboard = function (list) {
 };
 /*======================== get Dashboard User Message  ===========================*/
 Dashboard.getDashboardUserMessage = (result) => {
-    dbConn.query('select M.id,M.title,M.created_on,M.photo as img from tm_message as M order by M.id desc limit 3', (err, res) => {
+    dbConn.query('select M.id,M.title,M.created_on,M.photo as img from tm_message as M where M.status = 1 order by M.id desc ', (err, res) => {
         if (err) {
             console.log(err)
             result(err);
