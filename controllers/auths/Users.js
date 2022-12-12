@@ -133,17 +133,19 @@ module.exports.changePassword = async (req, res) => {
 }
 /*=============== User Logout ========================*/
 module.exports.Logout = async (req, res) => {
-    const refreshToken = req.cookies.refreshToken;
-    if (!refreshToken) return res.status(204);
+
+    const refreshToken = req.cookies.refreshToken || req.params.token;
+    //console.log(refreshToken)
+    if (!refreshToken) return res.status(204).json({ status: false, msg: 'refresh Token missing' });
     Users.getUsersByRefreshToken(refreshToken, (error, UserInfo) => {
 
-        if (!UserInfo[0]) return res.status(204);
+        if (!UserInfo[0]) return res.status(204).json({ status: false, msg: 'User not here' });
         const userId = UserInfo[0].id;
         Users.updateUsersInfo(userId, { refresh_token: null }, (error, UserInfo) => {
-            res.status(400).json({ status: false, msg: "update refreshToken" });
+
+            res.clearCookie('refreshToken');
+            return res.status(200).json({ status: true, msg: 'logout successfully' });
         });
-        res.clearCookie('refreshToken');
-        return res.status(200);
     });
 
 }

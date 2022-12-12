@@ -43,6 +43,7 @@ module.exports.DashboardOpeningList = async (req, res) => {
     try {
         const pageSize = 2;
         const page = parseInt(req.query.page);
+        //const skip = (page-1)*pageSize;
         Opening.countOpenings((error1, total) => {
             Opening.dashboardOpeningsList(page, pageSize,(error, data) => {
                 res.status(200).json({

@@ -8,6 +8,7 @@ var Openings = function (list) {
     this.description = list.description;
     this.status = list.status;
 };
+
 /*======================== get Openings Dashboard List ===========================*/
 Openings.dashboardOpeningsList = (pagees, pageSize,result) => {
     let page = pagees ? Number(pagees) : 1;
@@ -15,7 +16,23 @@ Openings.dashboardOpeningsList = (pagees, pageSize,result) => {
     dbConn.query('select O.id,O.name as title,O.opening_limit as opening,C.name as company,D.name as dept_name,R.name as role_name,O.created_on as opening_date from tm_opening as O '+
     'left join tm_company as C on C.id = O.comp_id ' +
         'left join tm_department as D on D.id = O.dept_id ' +
-        'left join tm_role as R on R.id = O.role_id where O.status = 1 order by O.id desc limit ' + startingLimit + ',' + pageSize, (err, res) => {
+        'left join tm_role as R on R.id = O.role_id order by O.id desc limit ' + startingLimit + ',' + pageSize, (err, res) => {
+        if (err) {
+            console.log(err)
+            result(err);
+        } else {
+            result(null, res);
+        }
+    })
+}
+/*=============== Get Search All Openings ============================*/
+Openings.getAllSearchOpenings = (search, pagees, pageSize,result) => {
+    let page = pagees ? Number(pagees) : 1;
+    const startingLimit = (page - 1) * pageSize;
+    dbConn.query('select O.id,O.name as title,O.opening_limit as opening,O.description,O.experience,O.status,Cm.name as company,D.name as dept_name,R.name as role_name,O.created_on as opening_date from tm_opening as O ' +
+    'left join tm_company as Cm on Cm.id = O.comp_id '+
+    'left join tm_department as D on D.id = O.dept_id ' +
+    'left join tm_role as R on R.id = O.role_id where O.name LIKE "%' + search + '%" ORDER BY O.id desc limit ' + startingLimit + ',' + pageSize, (err, res) => {
         if (err) {
             console.log(err)
             result(err);

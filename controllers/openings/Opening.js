@@ -1,5 +1,28 @@
 var Openings = require("../../models/OpeningModel.js");
 
+/*=============== Get All Policy ============================*/
+module.exports.searchOpeningData = (req, res) => {
+    try {
+        const pageSize = 5;
+        const search = req.query.query || '' ;
+        const page = parseInt(req.query.page);
+        Openings.countOpenings((error1, total) => {
+            Openings.getAllSearchOpenings(search,page, pageSize, (error, data) => {
+                res.status(200).json({
+                    status: true,
+                    msg: 'Openings message successfully',
+                    nbPages: total[0].Total,
+                    page: page,
+                    limit: pageSize,
+                    opening: data
+                });
+            });
+        });
+
+    } catch (error) {
+        res.status(201).json({ status: false, msg: error })
+    }
+}
 /*=========================== Get All Opening List ==============================*/
 module.exports.List = async (req, res) => {
     try {

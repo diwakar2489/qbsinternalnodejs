@@ -20,7 +20,7 @@ var { refreshToken } =  require("../controllers/auths/RefreshToken.js");
 
 router.get('/token', refreshToken);
 router.post('/login', Login);
-router.delete('/logout', Logout);
+router.delete('/logout:token', Logout);
 router.post('/forgot-password', ForgotPass);
 router.post('/otp-verify', verifyOtp);
 router.put('/change-password', changePassword);
@@ -74,8 +74,9 @@ router.post('/edit_policy',verifyToken,editPolicyMessage);
 router.put('/update_policy',verifyToken,PolicyMessageUpdate);
 
 /*=================== Job Opening routers =====================*/
-var { List,Add,Edit,Update } = require("../controllers/openings/Opening.js");
+var { searchOpeningData,List,Add,Edit,Update } = require("../controllers/openings/Opening.js");
 
+router.get('/search_opening',searchOpeningData);
 router.get('/opening', verifyToken, List);
 router.post('/add_opening',verifyToken,Add);
 router.post('/edit_opening',verifyToken,Edit);
