@@ -18,11 +18,25 @@ Forms.getDashboardFormsData = (pagees, pageSize,result) => {
         }
     })
 }
+/*=============== Search All Forms ============================*/
+Forms.getAllSearchFomrs = (search,pagees, pageSize,result) => {
+    let page = pagees ? Number(pagees) : 1;
+    const startingLimit = (page - 1) * pageSize;
+    dbConn.query('select F.id,F.form_attachment as img,F.status,F.title,F.message,F.created_on as uploding_date,Cm.name as company from tm_forms as F ' +
+    'left join tm_company as Cm on Cm.id = F.comp_id Where F.title like "%' + search + '%" ORDER BY F.id desc limit ' + startingLimit + ',' + pageSize, (err, res) => {
+        if (err) {
+            console.log(err)
+            result(err);
+        } else {
+            result(null, res);
+        }
+    })
+}
 /*=============== Get All Forms ============================*/
 Forms.getAllForms = (pagees, pageSize,result) => {
     let page = pagees ? Number(pagees) : 1;
     const startingLimit = (page - 1) * pageSize;
-    dbConn.query('select F.id,F.form_attachment as img,F.status,F.title,F.message,Cm.name as company from tm_forms as F ' +
+    dbConn.query('select F.id,F.form_attachment as img,F.status,F.title,F.message, Cm.name as company from tm_forms as F ' +
     'left join tm_company as Cm on Cm.id = F.comp_id ORDER BY F.id desc limit ' + startingLimit + ',' + pageSize, (err, res) => {
         if (err) {
             console.log(err)

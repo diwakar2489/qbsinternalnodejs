@@ -2,6 +2,29 @@ var Bulletins = require('../../models/BulletinModel');
 var path = require('path');
 
 /*=============== Get All Bulletin ============================*/
+module.exports.searchBulletinData = (req, res) => {
+    try {
+        const pageSize = 5;
+        const search = req.query.query || '' ;
+        const page = parseInt(req.query.page);
+        Bulletins.countBulletinsMessages((error1, total) => {
+            Bulletins.getAllSearchBulletin(search,page, pageSize, (error, data) => {
+                res.status(200).json({
+                    status: true,
+                    msg: 'Bulletin message successfully',
+                    nbPages: total[0].Total,
+                    page: page,
+                    limit: pageSize,
+                    bulletin: data
+                });
+            });
+        });
+
+    } catch (error) {
+        res.status(201).json({ status: false, msg: error })
+    }
+}
+/*=============== Get All Bulletin ============================*/
 module.exports.getAllBulletins = (req, res) => {
     try {
         const pageSize = 2;

@@ -4,7 +4,7 @@ var { companyList } = require("../controllers/company/Companys.js");
 var { DepartmentList } = require("../controllers/department/Departments.js");
 var { getDepartmentWishRole } = require("../controllers/roles/Roles.js");
 var { verifyToken } = require("../middleware/VerifyToken.js");
-
+var { downloadFiles } = require("../controllers/auths/Common.js")
 
 var fileUploads = require("express-fileupload");
 const router = express.Router();
@@ -41,8 +41,9 @@ router.post('/edit_messages',verifyToken, editMessage);
 router.put('/update_messages',verifyToken, DashboardMessageUpdate);
 
 /*=================== Bulletin routers =====================*/
-var { getAllBulletins, addBulletin, editBulletinMessage, BulletinMessageUpdate} = require('../controllers/bulletin/Bulletins.js');
+var { searchBulletinData, getAllBulletins, addBulletin, editBulletinMessage, BulletinMessageUpdate} = require('../controllers/bulletin/Bulletins.js');
 
+router.get('/search_bulletin',searchBulletinData);
 router.get('/bulletin',verifyToken,getAllBulletins);
 router.post('/add_bulletin',verifyToken,addBulletin);
 router.post('/edit_bulletin',verifyToken,editBulletinMessage);
@@ -57,8 +58,9 @@ router.post('/edit_circular',verifyToken,editCircularMessage);
 router.put('/update_circular',verifyToken,CircularMessageUpdate);
 
 /*=================== Forms routers =====================*/
-var { getAllForms, addForms, editFormsMessage, FormsMessageUpdate} = require('../controllers/forms/Forms.js');
+var { searchFormsData,getAllForms, addForms, editFormsMessage, FormsMessageUpdate} = require('../controllers/forms/Forms.js');
 
+router.get('/search_forms',searchFormsData);
 router.get('/forms',verifyToken,getAllForms);
 router.post('/add_forms',verifyToken,addForms);
 router.post('/edit_forms',verifyToken,editFormsMessage);
@@ -82,7 +84,13 @@ router.post('/add_opening',verifyToken,Add);
 router.post('/edit_opening',verifyToken,Edit);
 router.put('/update_opening',verifyToken,Update);
 
+/*=================== Directory List routers =====================*/
+var { searchDirectoryData } = require("../controllers/directory/Directory.js");
+
+router.get('/search_directory',searchDirectoryData);
+
 /*=================== Common List routers =====================*/
+router.get('/download_files', verifyToken, downloadFiles);
 router.get('/company_list', verifyToken, companyList);
 router.get('/department_list', verifyToken, DepartmentList);
 router.put('/get_department_role',verifyToken,getDepartmentWishRole);

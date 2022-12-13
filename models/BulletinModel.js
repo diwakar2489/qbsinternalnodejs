@@ -5,6 +5,21 @@ var Bulletin = function (list) {
     this.message = list.message;
     this.status = list.status;
 };
+/*=============== Get Search All Bulletin ============================*/
+Bulletin.getAllSearchBulletin = (search, pagees, pageSize,result) => {
+    let page = pagees ? Number(pagees) : 1;
+    const startingLimit = (page - 1) * pageSize;
+    dbConn.query('select B.id,B.title,B.message,B.status,Cm.name as company,B.created_on as opening_date from tm_bulletin as B ' +
+    'left join tm_company as Cm on Cm.id = B.comp_id '+
+    ' where B.title LIKE "%' + search + '%" ORDER BY B.id desc limit ' + startingLimit + ',' + pageSize, (err, res) => {
+        if (err) {
+            console.log(err)
+            result(err);
+        } else {
+            result(null, res);
+        }
+    })
+}
 /*=============== Get All Bulletin ============================*/
 Bulletin.getAllBulletin = (pagees, pageSize,result) => {
 
