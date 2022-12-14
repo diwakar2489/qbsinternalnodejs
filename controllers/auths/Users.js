@@ -3,6 +3,28 @@ var bcrypt = require("bcrypt");
 var jwt = require("jsonwebtoken");
 var nodemailer = require('nodemailer');
 
+/*=============== Get All forms ============================*/
+module.exports.getUser = (req, res) => {
+    try {
+        const pageSize = 2;
+        const page = parseInt(req.query.page);
+        Users.countUsers((error1, total) => {
+            Users.getUsers(page, pageSize, (error, data) => {
+                res.status(200).json({
+                    status: true,
+                    msg: 'Users message successfully',
+                    nbPages: total[0].Total,
+                    page: page,
+                    limit: pageSize,
+                    users: data
+                });
+            });
+        });
+
+    } catch (error) {
+        res.status(201).json({ status: false, msg: error })
+    }
+}
 /*=============== User Login =======================*/
 module.exports.Login = async (req, res) => {
     try {
@@ -54,9 +76,12 @@ module.exports.addUser = async (req, res) => {
     //     //     let fileName = Date.now() + '_' + req.files.attachment.name;
     //     //     let newPath = path.join(process.cwd(), 'uploads/forms', fileName);
     //     //     req.files.attachment.mv(newPath);
-
+    const password = "Hive123";
+    const salt = await bcrypt.genSalt();
+    const hashPassword = await bcrypt.hash(password, salt);
             var firstRequestData = {
                 email:email,
+                password:hashPassword,
                 status:status,
                 comp_id: comp,
                 dept_id: dept,

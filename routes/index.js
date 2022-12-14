@@ -15,7 +15,7 @@ router.use(fileUploads({
 }));
 
 /*=================== Login routers =====================*/
-var { Login, addUser, Logout, ForgotPass, verifyOtp, changePassword } = require("../controllers/auths/Users.js");
+var { Login, addUser,getUser, Logout, ForgotPass, verifyOtp, changePassword } = require("../controllers/auths/Users.js");
 var { refreshToken } =  require("../controllers/auths/RefreshToken.js");
 
 router.get('/token', refreshToken);
@@ -25,6 +25,7 @@ router.post('/forgot-password', ForgotPass);
 router.post('/otp-verify', verifyOtp);
 router.put('/change-password', changePassword);
 router.post('/user_register',addUser)
+router.get('/users',verifyToken,getUser)
 
 /*=================== Dashboard routers =====================*/
 var {DashboardUserMessage, DashboardFormsList, DashboardOpeningList, DashboardCircularList} = require("../controllers/dashboard/Dashboard");

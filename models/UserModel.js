@@ -7,6 +7,32 @@ var Users = function (list) {
     this.status = list.status;
 };
 /*================================== get All Users ================================*/
+Users.getUsers = (pagees, pageSize,result) => {
+    let page = pagees ? Number(pagees) : 1;
+    const startingLimit = (page - 1) * pageSize;
+    dbConn.query('select U.id,concat(UD.fname," ",UD.mname," ",UD.lname) as name,U.email,U.alt_email,U.dept_id,U.role_id,U.status from tm_user as U ' +
+        'join tm_user_detail as UD on UD.user_id = U.id ORDER BY U.id desc limit ' + startingLimit + ',' + pageSize, (err, res) => {
+            if (err) {
+                console.log(err)
+                result(err);
+            } else {
+                result(null, res);
+            }
+        })
+}
+/*================================== get All Users ================================*/
+Users.countUsers = (result) => {
+    dbConn.query('select COUNT(U.id) as Total from tm_user as U ' +
+        'join tm_user_detail as UD on UD.user_id = U.id ', (err, res) => {
+            if (err) {
+                console.log(err)
+                result(err);
+            } else {
+                result(null, res);
+            }
+        })
+}
+/*================================== get All Users ================================*/
 Users.getAllUsers = (result) => {
     dbConn.query('select U.id,concat(UD.fname," ",UD.mname," ",UD.lname) as name,U.email,U.alt_email,U.dept_id,U.role_id,U.status from tm_user as U ' +
         'join tm_user_detail as UD on UD.user_id = U.id ', (err, res) => {
@@ -64,10 +90,11 @@ Users.updateUsersInfo = (id, userReqtData, result) => {
 /*======================= Create User ==============================*/
 Users.createUsers = (requestDataOne,requestDataTwo, result) => {
 
-    var command = 'INSERT INTO tm_user (email,comp_id,dept_id,role_id,status,created_on,created_by) VALUES (?,?,?,?,?,?,?)';
+    var command = 'INSERT INTO tm_user (email,password,comp_id,dept_id,role_id,status,created_on,created_by) VALUES (?,?,?,?,?,?,?,?)';
     //var id = uuidv1();
     dbConn.query(command, [
         requestDataOne.email,
+        requestDataOne.password,
         requestDataOne.comp_id,
         requestDataOne.dept_id,
         requestDataOne.role_id,

@@ -3,7 +3,7 @@ var Directory = require('../../models/DirectoryModel');
 /*=============== Get All forms ============================*/
 module.exports.searchDirectoryData = (req, res) => {
     try {
-        const pageSize = 5;
+        const pageSize = 4;
         const search = req.query.query || '' ;
         const page = parseInt(req.query.page);
         Directory.countDirectoryMessages((error1, total) => {
