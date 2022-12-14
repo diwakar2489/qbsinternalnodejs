@@ -61,6 +61,44 @@ Users.updateUsersInfo = (id, userReqtData, result) => {
     }
 
 }
+/*======================= Create User ==============================*/
+Users.createUsers = (requestDataOne,requestDataTwo, result) => {
+
+    var command = 'INSERT INTO tm_user (email,comp_id,dept_id,role_id,status,created_on,created_by) VALUES (?,?,?,?,?,?,?)';
+    //var id = uuidv1();
+    dbConn.query(command, [
+        requestDataOne.email,
+        requestDataOne.comp_id,
+        requestDataOne.dept_id,
+        requestDataOne.role_id,
+        requestDataOne.status,
+        requestDataOne.created_on,
+        requestDataOne.created_by],
+        (err, res) => {
+            if (err) {
+                console.log(err)
+            } else {
+                var user_id = res.insertId;
+               // console.log('Last insert ID', user_id);
+                var command2 = 'INSERT INTO tm_user_detail (user_id, emp_code,rept_mng_id,joining_date,fname,mname,lname,gender,contact_no,created_on,created_by) VALUES (?,?,?,?,?,?,?,?,?,?,?)';
+                dbConn.query(command2, [
+                        user_id,
+                        requestDataTwo.emp_code,
+                        requestDataTwo.rept_mng_id,
+                        requestDataTwo.joining_date,
+                        requestDataTwo.fname,
+                        requestDataTwo.mname,
+                        requestDataTwo.lname,
+                        requestDataTwo.gender,
+                        requestDataTwo.contact_no,
+                        requestDataTwo.created_on,
+                        requestDataTwo.created_by], (err, res) => {
+                        if (err) throw err;
+                });
+                result(null, user_id);
+            }
+        })
+};
 /*======================= Create otp ==============================*/
 Users.createUserOtp = (UserOtpReqData, result) => {
 
