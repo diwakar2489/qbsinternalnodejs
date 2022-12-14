@@ -48,7 +48,18 @@ Users.getAllUsers = (result) => {
         })
 }
 /*============================ get Users by id ================================*/
-Users.getUsersById = (emailID, results) => {
+Users.getUsersById = (ID, results) => {
+    dbConn.query('select U.id,U.email,U.alt_email,U.dept_id,U.role_id,U.status,UD.* from tm_user as U ' +
+        'join tm_user_detail as UD on UD.user_id = U.id where U.id = "' + ID + '"', (err, res) => {
+            if (err) {
+                results(err);
+            } else {
+                results(null, res);
+            }
+        })
+}
+/*============================ get Users by email ================================*/
+Users.getUsersByEmailId = (emailID, results) => {
     dbConn.query('select U.id,concat(UD.fname," ",UD.mname," ",UD.lname) as name,U.email,U.password,U.alt_email,U.dept_id,U.role_id,U.status from tm_user as U ' +
         'join tm_user_detail as UD on UD.user_id = U.id where U.email = "' + emailID + '"', (err, res) => {
             if (err) {
@@ -126,6 +137,43 @@ Users.createUsers = (requestDataOne,requestDataTwo, result) => {
                         if (err) throw err;
                 });
                 result(null, user_id);
+            }
+        })
+};
+/*======================= Update Users details ==============================*/
+Users.updateUsersInfo = (id,requestDataOne,requestDataTwo, result) => {
+    var command = 'update tm_user set comp_id =?,dept_id = ?,role_id = ?,status = ?,updated_on = ?,updated_by = ? where id= ?'
+   // var command = 'INSERT INTO tm_user (email,password,comp_id,dept_id,role_id,status,updated_on,updated_by) VALUES (?,?,?,?,?,?,?,?)';
+    //var id = uuidv1();
+    dbConn.query(command, [
+        requestDataOne.comp_id,
+        requestDataOne.dept_id,
+        requestDataOne.role_id,
+        requestDataOne.status,
+        requestDataOne.created_on,
+        requestDataOne.created_by,
+        id ],
+        (err, res) => {
+            if (err) {
+                console.log(err)
+            } else {
+               var command2 = 'update tm_user_detail set emp_code=?,rept_mng_id=?,joining_date=?,fname=?,mname=?,lname=?,gender=?,contact_no=?,updated_on = ?,updated_by = ? where user_id= ?'
+               // var command2 = 'INSERT INTO tm_user_detail (user_id, emp_code,rept_mng_id,joining_date,fname,mname,lname,gender,contact_no,created_on,created_by) VALUES (?,?,?,?,?,?,?,?,?,?,?)';
+                dbConn.query(command2, [
+                        requestDataTwo.emp_code,
+                        requestDataTwo.rept_mng_id,
+                        requestDataTwo.joining_date,
+                        requestDataTwo.fname,
+                        requestDataTwo.mname,
+                        requestDataTwo.lname,
+                        requestDataTwo.gender,
+                        requestDataTwo.contact_no,
+                        requestDataTwo.updated_on,
+                        requestDataTwo.updated_by,
+                        id], (err, res) => {
+                        if (err) throw err;
+                });
+                result(null, res);
             }
         })
 };

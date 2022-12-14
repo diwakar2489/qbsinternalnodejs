@@ -116,10 +116,72 @@ module.exports.addUser = async (req, res) => {
         console.log(error);
     }
 };
+/*================================= Edit Users By id ==================================*/
+module.exports.editUsers = async (req, res) => {
+    try {
+        let ID = req.body.id;
+        console.log(ID)
+        Users.getUsersById(ID, (error, data) => {
+            console.log(data);
+            if (data != '') {
+                res.status(200).json({ status: true, msg: "Users Message Data fatch successfully", result: data[0] });
+            } else {
+                res.status(201).json({ status: false, msg: "Users Message ID not founds !" });
+
+            }
+        });
+    } catch (e) {
+        res.status(204).json({ status: false, msg: "Users message ID not founds !" });
+    }
+};
+/*======================================  updated User details ==================================================*/
+module.exports.UserDetailsUpdate = async (req, res) => {
+    // console.log(req.files);
+     try {
+         let ID = req.body.id;
+       
+         const { empcode,comp, dept, role,reportingMNG,joiningdate,fname,mname,lname,status,gender,contact,updated_on,updated_by } = req.body;
+         
+         var firstRequestData = {
+            status:status,
+            comp_id: comp,
+            dept_id: dept,
+            role_id: role,
+            updated_on: updated_on,
+            updated_by: updated_by,
+        }
+        var secondRequestData = {
+            emp_code: empcode,
+            rept_mng_id:reportingMNG,
+            joining_date:joiningdate,
+            fname:fname,
+            mname:mname,
+            lname:lname,
+            gender:gender,
+            contact_no:contact,
+            updated_on: updated_on,
+            updated_by: updated_by,
+        }
+        Users.updateUsersInfo(ID, firstRequestData,secondRequestData, (error, data) => {
+                 console.log(data);
+                 if (data.affectedRows > 0) {
+ 
+                     res.status(200).json({ status: true, msg: 'Update Users message successfully', result: data });
+                 } else {
+                     res.status(201).json({ status: false, msg: 'Error for Update Users message Id=' + ID });
+                 }
+             });
+ 
+         
+     } catch (e) {
+         res.status(204).json({ status: false, msg: 'Something went wrong!.' });
+ 
+     }
+ };
 /*=============== User Forgot password ============================*/
 module.exports.ForgotPass = async (req, res) => {
     const { email } = req.body;
-    Users.getUsersById(email, (err, result) => {
+    Users.getUsersByEmailId(email, (err, result) => {
         if (result != '') {
 
             let otpcode = Math.floor((Math.random() * 10000) + 1);
