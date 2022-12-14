@@ -15,7 +15,7 @@ router.use(fileUploads({
 }));
 
 /*=================== Login routers =====================*/
-var { Login, Logout, ForgotPass, verifyOtp, changePassword } = require("../controllers/auths/Users.js");
+var { Login, addUser, Logout, ForgotPass, verifyOtp, changePassword } = require("../controllers/auths/Users.js");
 var { refreshToken } =  require("../controllers/auths/RefreshToken.js");
 
 router.get('/token', refreshToken);
@@ -24,6 +24,7 @@ router.delete('/logout:token', Logout);
 router.post('/forgot-password', ForgotPass);
 router.post('/otp-verify', verifyOtp);
 router.put('/change-password', changePassword);
+router.post('/user_register',addUser)
 
 /*=================== Dashboard routers =====================*/
 var {DashboardUserMessage, DashboardFormsList, DashboardOpeningList, DashboardCircularList} = require("../controllers/dashboard/Dashboard");
@@ -33,8 +34,8 @@ router.get('/dashboard_forms',verifyToken, DashboardFormsList);
 router.get('/dashboard_opening',verifyToken, DashboardOpeningList);
 router.get('/dashboard_circular',verifyToken, DashboardCircularList);
 /*=================== Dashboard Message routers =====================*/
-var {DashboardMessage,addMessage,editMessage,DashboardMessageUpdate} = require("../controllers/dashboard/Dashboard_message");
-
+var {searchDashboardMessagesData,DashboardMessage,addMessage,editMessage,DashboardMessageUpdate} = require("../controllers/dashboard/Dashboard_message");
+router.get('/search_messages',searchDashboardMessagesData);
 router.get('/messages',verifyToken, DashboardMessage);
 router.post('/add_messages',verifyToken, addMessage);
 router.post('/edit_messages',verifyToken, editMessage);
@@ -50,8 +51,9 @@ router.post('/edit_bulletin',verifyToken,editBulletinMessage);
 router.put('/update_bulletin',verifyToken,BulletinMessageUpdate);
 
 /*=================== Circular routers =====================*/
-var { getAllCirculars, addCircular, editCircularMessage, CircularMessageUpdate} = require('../controllers/circulars/Circulars.js');
+var { searchCircularData, getAllCirculars, addCircular, editCircularMessage, CircularMessageUpdate} = require('../controllers/circulars/Circulars.js');
 
+router.get('/search_circular',searchCircularData);
 router.get('/circular',verifyToken,getAllCirculars);
 router.post('/add_circular',verifyToken,addCircular);
 router.post('/edit_circular',verifyToken,editCircularMessage);

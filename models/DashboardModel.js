@@ -15,6 +15,23 @@ Dashboard.getDashboardUserMessage = (result) => {
         }
     })
 }
+/*=============== Get Search Dashboard Messages ============================*/
+Dashboard.getSearchDashboard = (search,pagees, pageSize, total, result) => {
+    const numOfResults = total;
+    const numberOfPages = Math.ceil(numOfResults / pageSize);
+    let page = pagees ? Number(pagees) : 1;
+    const startingLimit = (page - 1) * pageSize;
+
+    dbConn.query('select M.id,M.photo as img,M.status,M.title,M.message,C.name as company from tm_message as M ' +
+        'left join tm_company as C on C.id = M.comp_id where M.title like "%' + search + '%" ORDER BY M.id desc limit ' + startingLimit + ',' + pageSize, (err, res) => {
+        if (err) {
+            console.log(err)
+            result(err);
+        } else {
+            result(null, res);
+        }
+    })
+}
 /*=============== Get All Dashboard Messages ============================*/
 Dashboard.getAllDashboard = (pagees, pageSize, total, result) => {
     const numOfResults = total;

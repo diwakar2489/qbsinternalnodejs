@@ -1,6 +1,28 @@
 var Dashboard = require("../../models/DashboardModel.js");
 var path = require('path');
 
+/*=============== Get Search Dashboard Messages ============================*/
+module.exports.searchDashboardMessagesData = async (req, res) => {
+    try {
+        const pageSize = 3;
+        const search = req.query.query || '' ;
+        const page = parseInt(req.query.page);
+        Dashboard.countDashboardMessages((error1, total) => {
+            Dashboard.getSearchDashboard(search,page,pageSize,total,(error, data) => {
+                res.status(200).json({ 
+                    status: true,
+                    msg: 'Dashboard message successfully',
+                    nbPages:total[0].Total, 
+                    page: page,
+                    limit: pageSize,
+                    dashboard: data });
+            });
+        });
+
+    } catch (error) {
+        res.status(201).json({ status: false, msg: error })
+    }
+}
 /*=============== Get All Dashboard Messages ============================*/
 module.exports.DashboardMessage = async (req, res) => {
     try {

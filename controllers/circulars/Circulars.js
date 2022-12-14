@@ -1,6 +1,27 @@
 var Circulars = require('../../models/CircularModel');
 var path = require('path');
 
+/*=============== Get Search Dashboard Messages ============================*/
+module.exports.searchCircularData = async (req, res) => {
+    try {
+        const pageSize = 2;
+        const page = parseInt(req.query.page);
+        Circulars.countCircularsMessages((error1, total) => {
+            Circulars.dashboardCircularList(page,pageSize,(error, data) => {
+                res.status(200).json({ 
+                    status: true,
+                    msg: 'Circulars message successfully',
+                    nbPages:total[0].Total, 
+                    page: page,
+                    limit: pageSize,
+                    circular: data });
+            });
+        });
+
+    } catch (error) {
+        res.status(201).json({ status: false, msg: error })
+    }
+}
 /*=============== Get All Circulars ============================*/
 module.exports.getAllCirculars = (req, res) => {
     try {

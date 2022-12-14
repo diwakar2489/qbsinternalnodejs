@@ -45,6 +45,45 @@ module.exports.Login = async (req, res) => {
         res.status(404).json({ status: false, msg: "Invalid Credentials !" });
     }
 }
+/*============================ Add Users ======================================*/
+module.exports.addUser = async (req, res) => {
+    console.log(req.body)
+    // try {
+    //     const { email,status, created_on, created_by } = req.body;
+    //     // if (req.files) {
+    //     //     let fileName = Date.now() + '_' + req.files.attachment.name;
+    //     //     let newPath = path.join(process.cwd(), 'uploads/forms', fileName);
+    //     //     req.files.attachment.mv(newPath);
+
+    //         var requestData = {
+    //             comp_id: compId,
+    //             title: title,
+    //             message: message,
+    //             attachment: fileName,
+    //             status: status,
+    //             created_on: created_on,
+    //             created_by: created_by,
+    //         }
+    //         Forms.createForms(requestData, (error, message) => {
+    //             console.log(message);
+    //             if (message) {
+    //                 res.status(200).json({ status: true, msg: "Forms data inserted successfully", data: message });
+    //             } else {
+    //                 res.status(201).json({ status: false, msg: "Something Went Wrong" });
+    //             }
+
+    //         });
+
+    //     // } else {
+    //     //     return res.status(201).json({ status: false, msg: "Image field is required" });
+    //     // }
+
+
+    // } catch (error) {
+    //     res.status(400).json({ status: false, msg: "Something Went Wrong" });
+    //     console.log(error);
+    // }
+};
 /*=============== User Forgot password ============================*/
 module.exports.ForgotPass = async (req, res) => {
     const { email } = req.body;

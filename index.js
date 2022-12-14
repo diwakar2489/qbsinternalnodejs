@@ -14,6 +14,9 @@ app.use(cors({credentials:true, origin:'http://localhost:3000' }));
 app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({extended:true}));
+
+app.use('/images', express.static(__dirname+'/uploads/forms'));
+
 app.use('/api',Authrouter);
 
 app.listen(8082, ()=> console.log('Server running at port 8082'));
