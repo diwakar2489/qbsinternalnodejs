@@ -49,7 +49,7 @@ Users.getAllUsers = (result) => {
 }
 /*============================ get Users by id ================================*/
 Users.getUsersById = (ID, results) => {
-    dbConn.query('select U.id,U.email,U.alt_email,U.dept_id,U.role_id,U.status,UD.* from tm_user as U ' +
+    dbConn.query('select U.id,U.email,U.alt_email,U.comp_id,U.dept_id,U.role_id,U.status,UD.* from tm_user as U ' +
         'join tm_user_detail as UD on UD.user_id = U.id where U.id = "' + ID + '"', (err, res) => {
             if (err) {
                 results(err);
@@ -157,10 +157,9 @@ Users.updateUsersInfo = (id,requestDataOne,requestDataTwo, result) => {
             if (err) {
                 console.log(err)
             } else {
-               var command2 = 'update tm_user_detail set emp_code=?,rept_mng_id=?,joining_date=?,fname=?,mname=?,lname=?,gender=?,contact_no=?,updated_on = ?,updated_by = ? where user_id= ?'
+               var command2 = 'update tm_user_detail set rept_mng_id=?,joining_date=?,fname=?,mname=?,lname=?,gender=?,contact_no=?,updated_on = ?,updated_by = ? where user_id= ?'
                // var command2 = 'INSERT INTO tm_user_detail (user_id, emp_code,rept_mng_id,joining_date,fname,mname,lname,gender,contact_no,created_on,created_by) VALUES (?,?,?,?,?,?,?,?,?,?,?)';
                 dbConn.query(command2, [
-                        requestDataTwo.emp_code,
                         requestDataTwo.rept_mng_id,
                         requestDataTwo.joining_date,
                         requestDataTwo.fname,
