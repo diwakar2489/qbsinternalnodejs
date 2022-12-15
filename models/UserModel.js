@@ -49,7 +49,7 @@ Users.getAllUsers = (result) => {
 }
 /*============================ get Users by id ================================*/
 Users.getUsersById = (ID, results) => {
-    dbConn.query('select U.id,U.email,U.alt_email,C.name as company,D.name as dept_name,R.name as role_name,U.comp_id,U.dept_id,U.role_id,U.status,UD.* from tm_user as U ' +    
+    dbConn.query('select U.id,U.email,U.user_type,U.alt_email,C.name as company,D.name as dept_name,R.name as role_name,U.comp_id,U.dept_id,U.role_id,U.status,UD.* from tm_user as U ' +    
     'join tm_user_detail as UD on UD.user_id = U.id '+
     'left join tm_company as C on C.id = U.comp_id ' +
     'left join tm_department as D on D.id = U.dept_id ' +
@@ -63,7 +63,7 @@ Users.getUsersById = (ID, results) => {
 }
 /*============================ get Users by email ================================*/
 Users.getUsersByEmailId = (emailID, results) => {
-    dbConn.query('select U.id,concat(UD.fname," ",UD.mname," ",UD.lname) as name,U.email,U.password,U.alt_email,U.dept_id,U.role_id,U.status from tm_user as U ' +
+    dbConn.query('select U.id,concat(UD.fname," ",UD.mname," ",UD.lname) as name,U.user_type,U.email,U.password,U.alt_email,U.dept_id,U.role_id,U.status from tm_user as U ' +
         'join tm_user_detail as UD on UD.user_id = U.id where U.email = "' + emailID + '"', (err, res) => {
             if (err) {
                 results(err);
