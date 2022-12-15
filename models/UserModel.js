@@ -49,8 +49,11 @@ Users.getAllUsers = (result) => {
 }
 /*============================ get Users by id ================================*/
 Users.getUsersById = (ID, results) => {
-    dbConn.query('select U.id,U.email,U.alt_email,U.comp_id,U.dept_id,U.role_id,U.status,UD.* from tm_user as U ' +
-        'join tm_user_detail as UD on UD.user_id = U.id where U.id = "' + ID + '"', (err, res) => {
+    dbConn.query('select U.id,U.email,U.alt_email,C.name as company,D.name as dept_name,R.name as role_name,U.comp_id,U.dept_id,U.role_id,U.status,UD.* from tm_user as U ' +    
+    'join tm_user_detail as UD on UD.user_id = U.id '+
+    'left join tm_company as C on C.id = U.comp_id ' +
+    'left join tm_department as D on D.id = U.dept_id ' +
+    'left join tm_role as R on R.id = U.role_id  where U.id = "' + ID + '"', (err, res) => {
             if (err) {
                 results(err);
             } else {
