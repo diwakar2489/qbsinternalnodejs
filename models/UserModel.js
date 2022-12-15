@@ -141,7 +141,7 @@ Users.createUsers = (requestDataOne,requestDataTwo, result) => {
         })
 };
 /*======================= Update Users details ==============================*/
-Users.updateUsersInfo = (id,requestDataOne,requestDataTwo, result) => {
+Users.updateUsersDetailsInfo = (id,requestDataOne,requestDataTwo, result) => {
     var command = 'update tm_user set comp_id =?,dept_id = ?,role_id = ?,status = ?,updated_on = ?,updated_by = ? where id= ?'
    // var command = 'INSERT INTO tm_user (email,password,comp_id,dept_id,role_id,status,updated_on,updated_by) VALUES (?,?,?,?,?,?,?,?)';
     //var id = uuidv1();

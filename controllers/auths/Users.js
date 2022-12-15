@@ -29,7 +29,7 @@ module.exports.getUser = (req, res) => {
 module.exports.Login = async (req, res) => {
     try {
         let emailID = req.body.email;
-        Users.getUsersById(emailID, async (error, user) => {
+        Users.getUsersByEmailId(emailID, async (error, user) => {
             if (user == '') {
                 return res.status(400).json({ status: false, msg: "Invaild Username !" });
             } else {
@@ -161,7 +161,7 @@ module.exports.UserDetailsUpdate = async (req, res) => {
             updated_on: updated_on,
             updated_by: updated_by,
         }
-        Users.updateUsersInfo(ID, firstRequestData,secondRequestData, (error, data) => {
+        Users.updateUsersDetailsInfo(ID, firstRequestData,secondRequestData, (error, data) => {
                  console.log(data);
                  if (data.affectedRows > 0) {
  
