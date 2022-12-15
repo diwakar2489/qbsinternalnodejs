@@ -29,39 +29,50 @@ module.exports.getUser = (req, res) => {
 module.exports.Login = async (req, res) => {
     try {
         let emailID = req.body.email;
-        Users.getUsersByEmailId(emailID, async (error, user) => {
-            if (user == '') {
-                return res.status(400).json({ status: false, msg: "Invaild Username !" });
-            } else {
-                const password = req.body.password;
-                const match = await bcrypt.compare(password, user[0].password);
-                if (!match)
-                    return res.status(400).json({ status: false, msg: "Wrong Password !" });
+        const password = req.body.password;
+        if (emailID != "" && password != "") {
+            Users.getUsersByEmailId(emailID, async (error, user) => {
+                if (user == '') {
+                    return res.status(400).json({ status: false, msg: "Invalid Credentials" });
+                } else {
+                    const match = await bcrypt.compare(password, user[0].password);
+                    if (!match)
+                        return res.status(400).json({ status: false, msg: "Invalid Credentials !" });
 
-                const userId = user[0].id;
-                const name = user[0].name;
-                const email = user[0].email;
-                const accessToken = jwt.sign({ userId, name, email }, process.env.ACCESS_TOKEN_SECRET, {
-                    expiresIn: '1d'
-                });
+                    const userId = user[0].id;
+                    const name = user[0].name;
+                    const email = user[0].email;
+                    const accessToken = jwt.sign({ userId, name, email }, process.env.ACCESS_TOKEN_SECRET, {
+                        expiresIn: '1d'
+                    });
 
-                const refreshToken = jwt.sign({ userId, name, email }, process.env.REFRESH_TOKEN_SECRET, {
-                    expiresIn: '1d'
-                });
-                var requestData = {
-                    refresh_token: refreshToken,
+                    const refreshToken = jwt.sign({ userId, name, email }, process.env.REFRESH_TOKEN_SECRET, {
+                        expiresIn: '1d'
+                    });
+                    var requestData = {
+                        refresh_token: refreshToken,
+                    }
+                    Users.updateUsersInfo(userId, requestData, (error, UserInfo) => {
+                        console.log('update refreshToken')
+                    });
+
+                    res.cookie('refreshToken', refreshToken, {
+                        httpOnly: true,
+                        maxAge: 24 * 60 * 60 * 1000
+                    });
+                    res.status(200).json({ status: true, msg: 'user logged in successfully', accessToken });
                 }
-                Users.updateUsersInfo(userId, requestData, (error, UserInfo) => {
-                    console.log('update refreshToken')
-                });
-
-                res.cookie('refreshToken', refreshToken, {
-                    httpOnly: true,
-                    maxAge: 24 * 60 * 60 * 1000
-                });
-                res.status(200).json({ status: true, msg: 'user logged in successfully', accessToken });
+            });
+        }else{
+            if(emailID == "" && password == ""){
+                return res.status(400).json({ status: false, msg: "User Name & password can't be empty" });
+            }else if(emailID == ""){
+                return res.status(400).json({ status: false, msg: "UserName can't be empty" });
+            }else if(password == ""){
+                return res.status(400).json({ status: false, msg: "Password can't be empty" });
             }
-        });
+           
+        }
     } catch (error) {
         console.log(error)
         res.status(404).json({ status: false, msg: "Invalid Credentials !" });
@@ -70,46 +81,47 @@ module.exports.Login = async (req, res) => {
 /*============================ Add Users ======================================*/
 module.exports.addUser = async (req, res) => {
     console.log(req.body)
-     try {
-         const { empcode,comp, dept, role,reportingMNG,joiningdate,fname,mname,lname,email,status,gender,contact,created_on,created_by } = req.body;
-    //     // if (req.files) {
-    //     //     let fileName = Date.now() + '_' + req.files.attachment.name;
-    //     //     let newPath = path.join(process.cwd(), 'uploads/forms', fileName);
-    //     //     req.files.attachment.mv(newPath);
-    const password = "Hive123";
-    const salt = await bcrypt.genSalt();
-    const hashPassword = await bcrypt.hash(password, salt);
-            var firstRequestData = {
-                email:email,
-                password:hashPassword,
-                status:status,
-                comp_id: comp,
-                dept_id: dept,
-                role_id: role,
-                created_on: created_on,
-                created_by: created_by,
+    try {
+        const { usertype,empcode, comp, dept, role, reportingMNG, joiningdate, fname, mname, lname, email, status, gender, contact, created_on, created_by } = req.body;
+        //     // if (req.files) {
+        //     //     let fileName = Date.now() + '_' + req.files.attachment.name;
+        //     //     let newPath = path.join(process.cwd(), 'uploads/forms', fileName);
+        //     //     req.files.attachment.mv(newPath);
+        const password = "Hive123";
+        const salt = await bcrypt.genSalt();
+        const hashPassword = await bcrypt.hash(password, salt);
+        var firstRequestData = {
+            email: email,
+            user_type:usertype,
+            password: hashPassword,
+            status: status,
+            comp_id: comp,
+            dept_id: dept,
+            role_id: role,
+            created_on: created_on,
+            created_by: created_by,
+        }
+        var secondRequestData = {
+            emp_code: empcode,
+            rept_mng_id: reportingMNG,
+            joining_date: joiningdate,
+            fname: fname,
+            mname: mname,
+            lname: lname,
+            gender: gender,
+            contact_no: contact,
+            created_on: created_on,
+            created_by: created_by,
+        }
+        Users.createUsers(firstRequestData, secondRequestData, (error, result) => {
+            //console.log(result);
+            if (result) {
+                res.status(200).json({ status: true, msg: "Users data inserted successfully", data: result });
+            } else {
+                res.status(201).json({ status: false, msg: "Something Went Wrong" });
             }
-            var secondRequestData = {
-                emp_code: empcode,
-                rept_mng_id:reportingMNG,
-                joining_date:joiningdate,
-                fname:fname,
-                mname:mname,
-                lname:lname,
-                gender:gender,
-                contact_no:contact,
-                created_on: created_on,
-                created_by: created_by,
-            }
-            Users.createUsers(firstRequestData,secondRequestData, (error, result) => {
-                //console.log(result);
-                if (result) {
-                    res.status(200).json({ status: true, msg: "Users data inserted successfully", data: result });
-                } else {
-                    res.status(201).json({ status: false, msg: "Something Went Wrong" });
-                }
 
-            });
+        });
 
     } catch (error) {
         res.status(400).json({ status: false, msg: "Something Went Wrong" });
@@ -137,13 +149,14 @@ module.exports.editUsers = async (req, res) => {
 /*======================================  updated User details ==================================================*/
 module.exports.UserDetailsUpdate = async (req, res) => {
     // console.log(req.files);
-     try {
-         let ID = req.body.id;
-       
-         const { comp, dept, role,reportingMNG,joiningdate,fname,mname,lname,status,gender,contact,updated_on,updated_by } = req.body;
-         
-         var firstRequestData = {
-            status:status,
+    try {
+        let ID = req.body.id;
+
+        const { usertype,comp, dept, role, reportingMNG, joiningdate, fname, mname, lname, status, gender, contact, updated_on, updated_by } = req.body;
+
+        var firstRequestData = {
+            status: status,
+            user_type:usertype,
             comp_id: comp,
             dept_id: dept,
             role_id: role,
@@ -151,32 +164,32 @@ module.exports.UserDetailsUpdate = async (req, res) => {
             updated_by: updated_by,
         }
         var secondRequestData = {
-            rept_mng_id:reportingMNG,
-            joining_date:joiningdate,
-            fname:fname,
-            mname:mname,
-            lname:lname,
-            gender:gender,
-            contact_no:contact,
+            rept_mng_id: reportingMNG,
+            joining_date: joiningdate,
+            fname: fname,
+            mname: mname,
+            lname: lname,
+            gender: gender,
+            contact_no: contact,
             updated_on: updated_on,
             updated_by: updated_by,
         }
-        Users.updateUsersDetailsInfo(ID, firstRequestData,secondRequestData, (error, data) => {
-                 console.log(data);
-                 if (data.affectedRows > 0) {
- 
-                     res.status(200).json({ status: true, msg: 'Update Users message successfully', result: data });
-                 } else {
-                     res.status(201).json({ status: false, msg: 'Error for Update Users message Id=' + ID });
-                 }
-             });
- 
-         
-     } catch (e) {
-         res.status(204).json({ status: false, msg: 'Something went wrong!.' });
- 
-     }
- };
+        Users.updateUsersDetailsInfo(ID, firstRequestData, secondRequestData, (error, data) => {
+            console.log(data);
+            if (data.affectedRows > 0) {
+
+                res.status(200).json({ status: true, msg: 'Update Users message successfully', result: data });
+            } else {
+                res.status(201).json({ status: false, msg: 'Error for Update Users message Id=' + ID });
+            }
+        });
+
+
+    } catch (e) {
+        res.status(204).json({ status: false, msg: 'Something went wrong!.' });
+
+    }
+};
 /*=============== User Forgot password ============================*/
 module.exports.ForgotPass = async (req, res) => {
     const { email } = req.body;

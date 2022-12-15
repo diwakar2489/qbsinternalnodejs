@@ -104,9 +104,10 @@ Users.updateUsersInfo = (id, userReqtData, result) => {
 /*======================= Create User ==============================*/
 Users.createUsers = (requestDataOne,requestDataTwo, result) => {
 
-    var command = 'INSERT INTO tm_user (email,password,comp_id,dept_id,role_id,status,created_on,created_by) VALUES (?,?,?,?,?,?,?,?)';
+    var command = 'INSERT INTO tm_user (user_type,email,password,comp_id,dept_id,role_id,status,created_on,created_by) VALUES (?,?,?,?,?,?,?,?,?)';
     //var id = uuidv1();
     dbConn.query(command, [
+        requestDataOne.user_type,
         requestDataOne.email,
         requestDataOne.password,
         requestDataOne.comp_id,
@@ -142,11 +143,12 @@ Users.createUsers = (requestDataOne,requestDataTwo, result) => {
 };
 /*======================= Update Users details ==============================*/
 Users.updateUsersDetailsInfo = (id,requestDataOne,requestDataTwo, result) => {
-    var command = 'update tm_user set comp_id =?,dept_id = ?,role_id = ?,status = ?,updated_on = ?,updated_by = ? where id= ?'
+    var command = 'update tm_user set comp_id =?,user_type=?,dept_id = ?,role_id = ?,status = ?,updated_on = ?,updated_by = ? where id= ?'
    // var command = 'INSERT INTO tm_user (email,password,comp_id,dept_id,role_id,status,updated_on,updated_by) VALUES (?,?,?,?,?,?,?,?)';
     //var id = uuidv1();
     dbConn.query(command, [
         requestDataOne.comp_id,
+        requestDataOne.user_type,
         requestDataOne.dept_id,
         requestDataOne.role_id,
         requestDataOne.status,
