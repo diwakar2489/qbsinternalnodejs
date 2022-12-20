@@ -4,7 +4,7 @@ var path = require('path');
 /*=============== Get Search Dashboard Messages ============================*/
 module.exports.searchDashboardMessagesData = async (req, res) => {
     try {
-        const pageSize = 3;
+        const pageSize = 5;
         const search = req.query.query || '' ;
         const page = parseInt(req.query.page);
         Dashboard.countDashboardMessages((error1, total) => {
