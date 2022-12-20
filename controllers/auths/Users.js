@@ -193,7 +193,7 @@ module.exports.addLinkUser = async (req, res) => {
                     from: 'diwakarmahidon3@gmail.com',
                     to: 'diwakar.pandey@qbslearning.com',
                     subject: 'Complete Profile',
-                    html: `<h1>Welcome</h1><p>That was easy!</p><p>Please Complate your profile</p><br /> <a href="http://localhost:3000/user-joining-form/?user=${base64Email}">Click here to Register</a>`,
+                    html: `<h1>Welcome</h1><p>That was easy!</p><p>Please Complate your profile</p><br /> <a href="http://localhost:3000/user-joining-form?user=${base64Email}">Click here to Register</a>`,
                 };
     
                 transporter.sendMail(mailOptions, function (error, info) {
