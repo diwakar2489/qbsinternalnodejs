@@ -31,7 +31,7 @@ module.exports.UserLinkList = (req, res) => {
     try {
         const pageSize = 5;
         const page = parseInt(req.query.page);
-        Users.countUsers((error1, total) => {
+        Users.countLinksUsers((error1, total) => {
             Users.getLinkUsers(page, pageSize, (error, data) => {
                 res.status(200).json({
                     status: true,
