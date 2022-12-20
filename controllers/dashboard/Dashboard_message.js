@@ -85,7 +85,7 @@ module.exports.addMessage = async (req, res) => {
 module.exports.editMessage = async (req, res) => {
     try {
         let ID = req.body.id;
-
+        //console.log(ID);
         Dashboard.getMessageById(ID, (error, data) => {
             console.log(data);
             if (data != '') {

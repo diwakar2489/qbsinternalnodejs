@@ -144,6 +144,41 @@ Users.createUsers = (requestDataOne,requestDataTwo, result) => {
             }
         })
 };
+/*======================= Create Links User ==============================*/
+Users.createLinkUsers = (requestDataOne,requestDataTwo, result) => {
+
+    var command = 'INSERT INTO tm_user (email,comp_id,link_status,status,created_on,created_by) VALUES (?,?,?,?,?,?)';
+    //var id = uuidv1();
+    dbConn.query(command, [
+        requestDataOne.email,
+        requestDataOne.comp_id,
+        requestDataOne.link_status,
+        requestDataOne.status,
+        requestDataOne.created_on,
+        requestDataOne.created_by],
+        (err, res) => {
+            if (err) {
+                console.log(err)
+            } else {
+                var user_id = res.insertId;
+               // console.log('Last insert ID', user_id);
+                var command2 = 'INSERT INTO tm_user_detail (user_id, emp_code,fname,mname,lname,gender,contact_no,created_on,created_by) VALUES (?,?,?,?,?,?,?,?,?)';
+                dbConn.query(command2, [
+                        user_id,
+                        requestDataTwo.emp_code,
+                        requestDataTwo.fname,
+                        requestDataTwo.mname,
+                        requestDataTwo.lname,
+                        requestDataTwo.gender,
+                        requestDataTwo.contact_no,
+                        requestDataTwo.created_on,
+                        requestDataTwo.created_by], (err, res) => {
+                        if (err) throw err;
+                });
+                result(null, user_id);
+            }
+        })
+};
 /*======================= Update Users details ==============================*/
 Users.updateUsersDetailsInfo = (id,requestDataOne,requestDataTwo, result) => {
     var command = 'update tm_user set comp_id =?,user_type=?,dept_id = ?,role_id = ?,status = ?,updated_on = ?,updated_by = ? where id= ?'

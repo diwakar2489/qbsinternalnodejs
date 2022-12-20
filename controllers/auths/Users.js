@@ -2,6 +2,7 @@ var Users = require("../../models/UserModel.js");
 var bcrypt = require("bcrypt");
 var jwt = require("jsonwebtoken");
 var nodemailer = require('nodemailer');
+var buffer = require('buffer/').Buffer;
 
 /*=============== Get All forms ============================*/
 module.exports.getUser = (req, res) => {
@@ -126,6 +127,88 @@ module.exports.addUser = async (req, res) => {
     } catch (error) {
         res.status(400).json({ status: false, msg: "Something Went Wrong" });
         console.log(error);
+    }
+};
+/*============================ Add Links Users ======================================*/
+module.exports.addLinkUser = async (req, res) => {
+    console.log(req.body)
+    try {
+        const { empcode, company, fname, mname, lname, email, gender, contact, created_on, created_by } = req.body;
+    
+        var firstRequestData = {
+            email: email,
+            comp_id: company,
+            link_status:0,
+            status:0,
+            created_on: created_on,
+            created_by: created_by,
+        }
+        var secondRequestData = {
+            emp_code: empcode,
+            fname: fname,
+            mname: mname,
+            lname: lname,
+            gender: gender,
+            contact_no: contact,
+            created_on: created_on,
+            created_by: created_by,
+        }
+        Users.createLinkUsers(firstRequestData, secondRequestData, (error, result) => {
+            //console.log(result);
+            if (result) {
+
+               const base64Email = (buffer.from(email).toString('base64'));
+              // console.log(buffer.from("SGVsbG8gVmlzaGFsIFRoYWt1cg==", 'base64').toString('ascii'));
+                var transporter = nodemailer.createTransport({
+                    service: 'gmail',
+                    auth: {
+                        user: 'diwakarmahidon3@gmail.com',
+                        pass: 'liswuhwnkyuoraso'
+                    }
+                });
+    
+                var mailOptions = {
+                    from: 'diwakarmahidon3@gmail.com',
+                    to: 'diwakar.pandey@qbslearning.com',
+                    subject: 'Complete Profile',
+                    html: `<h1>Welcome</h1><p>That was easy!</p><p>Please Complate your profile</p><br /> <a href="http://localhost:3000/${base64Email}">Click here to Register</a>`,
+                };
+    
+                transporter.sendMail(mailOptions, function (error, info) {
+                    if (error) {
+                        console.log(error);
+                    } else {
+                        console.log('Email sent: ' + info.response);
+                    }
+                });
+                res.status(200).json({ status: true, msg: "Users data inserted successfully", data: result });
+            } else {
+                res.status(201).json({ status: false, msg: "Something Went Wrong" });
+            }
+
+        });
+
+    } catch (error) {
+        res.status(400).json({ status: false, msg: "Something Went Wrong" });
+        console.log(error);
+    }
+};
+/*================================= Email links Verify By User Eamil ==================================*/
+module.exports.UserLinkVerify = async (req, res) => {
+    try {
+        let EamilID = req.body.email;
+        console.log(EamilID)
+        Users.getUsersByEmailId(EamilID, (error, data) => {
+            console.log(data);
+            if (data != '') {
+                res.status(200).json({ status: true, msg: "Users Link Verify successfully", result: data[0] });
+            } else {
+                res.status(201).json({ status: false, msg: "Users Link Verify ID not founds !" });
+
+            }
+        });
+    } catch (e) {
+        res.status(204).json({ status: false, msg: "Users Link Verify ID not founds !" });
     }
 };
 /*================================= Edit Users By id ==================================*/
@@ -284,7 +367,7 @@ module.exports.Logout = async (req, res) => {
     if (!refreshToken) return res.status(204).json({ status: false, msg: 'refresh Token missing' });
     Users.getUsersByRefreshToken(refreshToken, (error, UserInfo) => {
 
-        if (!UserInfo[0]) return res.status(204).json({ status: false, msg: 'User not here' });
+        if (!UserInfo) return res.status(204).json({ status: false, msg: 'User not here' });
         const userId = UserInfo[0].id;
         Users.updateUsersInfo(userId, { refresh_token: null }, (error, UserInfo) => {
 

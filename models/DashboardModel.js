@@ -22,7 +22,7 @@ Dashboard.getSearchDashboard = (search,pagees, pageSize, total, result) => {
     let page = pagees ? Number(pagees) : 1;
     const startingLimit = (page - 1) * pageSize;
 
-    dbConn.query('select M.id,M.photo as img,M.status,M.title,M.message,C.name as company from tm_message as M ' +
+    dbConn.query('select M.id,M.photo as img,M.status,M.title,M.message,M.comp_id,C.name as company from tm_message as M ' +
         'left join tm_company as C on C.id = M.comp_id where M.title like "%' + search + '%" ORDER BY M.id desc limit ' + startingLimit + ',' + pageSize, (err, res) => {
         if (err) {
             console.log(err)
