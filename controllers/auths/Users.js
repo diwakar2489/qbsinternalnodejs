@@ -138,7 +138,7 @@ module.exports.addLinkUser = async (req, res) => {
         var firstRequestData = {
             email: email,
             comp_id: company,
-            link_status:0,
+            link_status:1,
             status:0,
             created_on: created_on,
             created_by: created_by,
@@ -197,8 +197,11 @@ module.exports.addLinkUser = async (req, res) => {
 module.exports.UserLinkVerify = async (req, res) => {
     try {
         let EamilID = req.body.email;
+        //let EamilID = 'ZGl3YWthci5wYW5kZXlAcWJzbGVhcm5pbmcuY29t';
+        const decodeEmailID = (buffer.from(EamilID, 'base64').toString('ascii'));
         console.log(EamilID)
-        Users.getUsersByEmailId(EamilID, (error, data) => {
+        console.log(decodeEmailID)
+        Users.getUsersByEmailId(decodeEmailID, (error, data) => {
             console.log(data);
             if (data != '') {
                 res.status(200).json({ status: true, msg: "Users Link Verify successfully", result: data[0] });
@@ -363,7 +366,7 @@ module.exports.changePassword = async (req, res) => {
 module.exports.Logout = async (req, res) => {
 
     const refreshToken = req.cookies.refreshToken || req.params.token;
-    //console.log(refreshToken)
+    //console.log(refreshToken);return false
     if (!refreshToken) return res.status(204).json({ status: false, msg: 'refresh Token missing' });
     Users.getUsersByRefreshToken(refreshToken, (error, UserInfo) => {
 
