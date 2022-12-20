@@ -26,6 +26,28 @@ module.exports.getUser = (req, res) => {
         res.status(201).json({ status: false, msg: error })
     }
 }
+/*=============== Get All forms ============================*/
+module.exports.UserLinkList = (req, res) => {
+    try {
+        const pageSize = 5;
+        const page = parseInt(req.query.page);
+        Users.countUsers((error1, total) => {
+            Users.getLinkUsers(page, pageSize, (error, data) => {
+                res.status(200).json({
+                    status: true,
+                    msg: 'Users Links successfully',
+                    nbPages: total[0].Total,
+                    page: page,
+                    limit: pageSize,
+                    users: data
+                });
+            });
+        });
+
+    } catch (error) {
+        res.status(201).json({ status: false, msg: error })
+    }
+}
 /*=============== User Login =======================*/
 module.exports.Login = async (req, res) => {
     try {

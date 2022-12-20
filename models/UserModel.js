@@ -23,6 +23,23 @@ Users.getUsers = (pagees, pageSize,result) => {
             }
         })
 }
+/*================================== get All Link Users ================================*/
+Users.getLinkUsers = (pagees, pageSize,result) => {
+    let page = pagees ? Number(pagees) : 1;
+    const startingLimit = (page - 1) * pageSize;
+    dbConn.query('select U.id,concat(UD.fname," ",UD.mname," ",UD.lname) as name,U.email,U.link_status as link,U.status,Cm.name as company,D.name as dept_name,R.name as role_name from tm_user as U ' +
+        'join tm_user_detail as UD on UD.user_id = U.id '+
+        'left join tm_company as Cm on Cm.id = U.comp_id '+
+        'left join tm_department as D on D.id = U.dept_id ' +
+        'left join tm_role as R on R.id = U.role_id where U.link_status = 1 ORDER BY U.id desc limit ' + startingLimit + ',' + pageSize, (err, res) => {
+            if (err) {
+                console.log(err)
+                result(err);
+            } else {
+                result(null, res);
+            }
+        })
+}
 /*================================== get All Users ================================*/
 Users.countUsers = (result) => {
     dbConn.query('select COUNT(U.id) as Total from tm_user as U ' +
