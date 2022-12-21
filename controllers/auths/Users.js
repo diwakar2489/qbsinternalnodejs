@@ -236,6 +236,51 @@ module.exports.UserLinkVerify = async (req, res) => {
         res.status(204).json({ status: false, msg: "Users Link Verify ID not founds !" });
     }
 };
+module.exports.UserLinksDetailsUpdate = async (req, res) => {
+     console.log(req.body);
+    // try {
+    //     let ID = req.body.id;
+    //     let UserEmail = req.body.user
+    //     res.status(200).json({ status: true, msg: 'Update Users message successfully', result: data });
+
+        // const { usertype,comp, dept, role, reportingMNG, joiningdate, fname, mname, lname, status, gender, contact, updated_on, updated_by } = req.body;
+
+        // var firstRequestData = {
+        //     status: status,
+        //     user_type:usertype,
+        //     comp_id: comp,
+        //     dept_id: dept,
+        //     role_id: role,
+        //     updated_on: updated_on,
+        //     updated_by: updated_by,
+        // }
+        // var secondRequestData = {
+        //     rept_mng_id: reportingMNG,
+        //     joining_date: joiningdate,
+        //     fname: fname,
+        //     mname: mname,
+        //     lname: lname,
+        //     gender: gender,
+        //     contact_no: contact,
+        //     updated_on: updated_on,
+        //     updated_by: updated_by,
+        // }
+        // Users.updateUsersDetailsInfo(ID, firstRequestData, secondRequestData, (error, data) => {
+        //     console.log(data);
+        //     if (data.affectedRows > 0) {
+
+        //         res.status(200).json({ status: true, msg: 'Update Users message successfully', result: data });
+        //     } else {
+        //         res.status(201).json({ status: false, msg: 'Error for Update Users message Id=' + ID });
+        //     }
+        // });
+
+
+    // } catch (e) {
+    //     res.status(204).json({ status: false, msg: 'Something went wrong!.' });
+
+    // }
+};
 /*================================= Edit Users By id ==================================*/
 module.exports.editUsers = async (req, res) => {
     try {
