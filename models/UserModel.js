@@ -55,7 +55,7 @@ Users.countLinksUsers = (result) => {
 /*================================== get All Users ================================*/
 Users.countUsers = (result) => {
     dbConn.query('select COUNT(U.id) as Total from tm_user as U ' +
-        'join tm_user_detail as UD on UD.user_id = U.id ', (err, res) => {
+        'join tm_user_detail as UD on UD.user_id = U.id where U.link_status = 0 ', (err, res) => {
             if (err) {
                 console.log(err)
                 result(err);
