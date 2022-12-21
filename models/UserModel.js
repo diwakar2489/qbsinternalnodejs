@@ -14,7 +14,7 @@ Users.getUsers = (pagees, pageSize,result) => {
         'join tm_user_detail as UD on UD.user_id = U.id '+
         'left join tm_company as Cm on Cm.id = U.comp_id '+
         'left join tm_department as D on D.id = U.dept_id ' +
-        'left join tm_role as R on R.id = U.role_id ORDER BY U.id desc limit ' + startingLimit + ',' + pageSize, (err, res) => {
+        'left join tm_role as R on R.id = U.role_id where U.link_status = 0 ORDER BY U.id desc limit ' + startingLimit + ',' + pageSize, (err, res) => {
             if (err) {
                 console.log(err)
                 result(err);
