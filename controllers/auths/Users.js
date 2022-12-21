@@ -240,48 +240,100 @@ module.exports.UserLinkVerify = async (req, res) => {
 };
 module.exports.UserLinksDetailsUpdate = async (req, res) => {
      console.log(req.body);
-    // try {
-    //     let ID = req.body.id;
-    //     let UserEmail = req.body.user
+     try {
+        let Email = req.body.email;
+        let segment = req.body.segment
+        const decodeEmailID = (buffer.from(segment, 'base64').toString('ascii'));
+        if(decodeEmailID === Email){
+            const { userid,
+            salutation, 
+            fname,
+            mname,
+            lname, 
+            guardian, 
+            nationality, 
+            dob, 
+            do_wann, 
+            bloodgroup,
+            adharnumber,
+            pannumber,
+            gender,
+            marrigestatus,
+            abled,
+            currentadd1,
+            currentadd2,
+            currentpin,
+            currentpersonalnumber,
+            currenthomenumber,
+            permanentadd1,
+            permanentadd2,
+            permanentpin,
+            permanentpersonalnumber,
+            emr_name,
+            emr_relation,
+            emr_phone,
+            updated_on } = req.body;
+            var firstRequestData = {
+                link_status:0,
+                updated_on: updated_on,
+                updated_by: userid,
+            }
+            var secondRequestData = {
+                salutation:salutation,
+                fname: fname,
+                mname: mname,
+                lname: lname,
+                gender: gender,
+                guardian_name: guardian,
+                nationality_type:nationality,
+                birthday:dob,
+                wedding_day:do_wann,
+                blood_group:bloodgroup,
+                uid_no:adharnumber,
+                pan_no:pannumber,
+                marrige_status:marrigestatus,
+                disability_type:abled,
+                updated_on: updated_on,
+                updated_by: userid,
+            }
+            var thirdRequestData = {
+                user_id:userid,
+                current_add_one:currentadd1,
+                current_add_two:currentadd2,
+                current_pin:currentpin,
+                current_per_no:currentpersonalnumber,
+                current_home_no:currenthomenumber,
+                permanent_add_one:permanentadd1,
+                permanent_add_two:permanentadd2,
+                permanent_pin:permanentpin,
+                permanent_per_no:permanentpersonalnumber,
+                emergency_name:emr_name,
+                emergency_relation:emr_relation,
+                emergency_phone:emr_phone,
+                created_by:userid,
+                created_on:updated_on
+            }
+            Users.updateUsersLinksDetailsInfo(userid, firstRequestData, secondRequestData,thirdRequestData, (error, data) => {
+                console.log(data);
+                if (data.affectedRows > 0) {
+
+                    res.status(200).json({ status: true, msg: 'Update Users Links profile successfully', result: data });
+                } else {
+                    res.status(201).json({ status: false, msg: 'Error for Update Users Links profile Id=' + userid });
+                }
+            });
+        }else{
+            console.log('errors')
+        }
     //     res.status(200).json({ status: true, msg: 'Update Users message successfully', result: data });
 
-        // const { usertype,comp, dept, role, reportingMNG, joiningdate, fname, mname, lname, status, gender, contact, updated_on, updated_by } = req.body;
-
-        // var firstRequestData = {
-        //     status: status,
-        //     user_type:usertype,
-        //     comp_id: comp,
-        //     dept_id: dept,
-        //     role_id: role,
-        //     updated_on: updated_on,
-        //     updated_by: updated_by,
-        // }
-        // var secondRequestData = {
-        //     rept_mng_id: reportingMNG,
-        //     joining_date: joiningdate,
-        //     fname: fname,
-        //     mname: mname,
-        //     lname: lname,
-        //     gender: gender,
-        //     contact_no: contact,
-        //     updated_on: updated_on,
-        //     updated_by: updated_by,
-        // }
-        // Users.updateUsersDetailsInfo(ID, firstRequestData, secondRequestData, (error, data) => {
-        //     console.log(data);
-        //     if (data.affectedRows > 0) {
-
-        //         res.status(200).json({ status: true, msg: 'Update Users message successfully', result: data });
-        //     } else {
-        //         res.status(201).json({ status: false, msg: 'Error for Update Users message Id=' + ID });
-        //     }
-        // });
+       
 
 
-    // } catch (e) {
-    //     res.status(204).json({ status: false, msg: 'Something went wrong!.' });
+    } catch (e) {
+        res.status(204).json({ status: false, msg: 'Something went wrong!.' });
 
-    // }
+    }
 };
 /*================================= Edit Users By id ==================================*/
 module.exports.editUsers = async (req, res) => {

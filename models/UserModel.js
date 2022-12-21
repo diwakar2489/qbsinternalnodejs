@@ -257,6 +257,69 @@ Users.updateUsersDetailsInfo = (id,requestDataOne,requestDataTwo, result) => {
             }
         })
 };
+/*======================= Update Users details ==============================*/
+Users.updateUsersLinksDetailsInfo = (id,requestDataOne,requestDataTwo,requestDataThird, result) => {
+    var command = 'update tm_user set link_status =?,updated_on = ?,updated_by = ? where id= ?'
+
+    dbConn.query(command, [
+        requestDataOne.link_status,
+        requestDataOne.created_on,
+        requestDataOne.created_by,
+        id ],
+        (err, res) => {
+            if (err) {
+                console.log(err)
+            } else {
+                
+               var command2 = 'update tm_user_detail set salutation=?,fname=?,mname=?,lname=?,gender=?,guardian_name=?,nationality_type=?,birthday=?,wedding_day=?,blood_group=?,uid_no=?,pan_no=?,marrige_status=?,disability_type=?,updated_on = ?,updated_by = ? where user_id= ?'
+                dbConn.query(command2, [
+                        requestDataTwo.salutation,
+                        requestDataTwo.fname,
+                        requestDataTwo.mname,
+                        requestDataTwo.lname,
+                        requestDataTwo.gender,
+                        requestDataTwo.guardian_name,
+                        requestDataTwo.nationality_type,
+                        requestDataTwo.birthday,
+                        requestDataTwo.wedding_day,
+                        requestDataTwo.blood_group,
+                        requestDataTwo.uid_no,
+                        requestDataTwo.pan_no,
+                        requestDataTwo.marrige_status,
+                        requestDataTwo.disability_type,
+                        requestDataTwo.updated_on,
+                        requestDataTwo.updated_by,
+                        id], (err, res) => {
+                        if (err) {
+                            console.log('user details update error '+err)
+                        }else{
+                            var command3 = 'INSERT INTO tm_user_address (user_id, current_add_one,current_add_two,current_pin,current_per_no,current_home_no,permanent_add_one,permanent_add_two,permanent_pin,permanent_per_no,emergency_name,emergency_relation,emergency_phone,created_on,created_by) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)';
+                            dbConn.query(command3, [
+                                    requestDataThird.user_id,
+                                    requestDataThird.current_add_one,
+                                    requestDataThird.current_add_two,
+                                    requestDataThird.current_pin,
+                                    requestDataThird.current_per_no,
+                                    requestDataThird.current_home_no,
+                                    requestDataThird.permanent_add_one,
+                                    requestDataThird.permanent_add_two,
+                                    requestDataThird.permanent_pin,
+                                    requestDataThird.permanent_per_no,
+                                    requestDataThird.emergency_name,
+                                    requestDataThird.emergency_relation,
+                                    requestDataThird.emergency_phone,
+                                    requestDataThird.created_on,
+                                    requestDataThird.created_by], (err, ress) => {
+                                    if (err) throw err;
+                                   // result(null, ress);
+                            });
+                            
+                        }
+                });
+                result(null, res);
+            }
+        })
+};
 /*======================= Create otp ==============================*/
 Users.createUserOtp = (UserOtpReqData, result) => {
 
