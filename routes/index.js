@@ -28,7 +28,7 @@ router.put('/change-password', changePassword);
 router.post('/user_link_create',verifyToken, addLinkUser);
 router.post('/user_link_verify', UserLinkVerify);
 router.get('/user_link_list',verifyToken, UserLinkList);
-router.put('/user_link_details_update',verifyToken, UserLinksDetailsUpdate);
+router.put('/user_link_details_update', UserLinksDetailsUpdate);
 
 router.post('/user_register',verifyToken, addUser)
 router.get('/users',verifyToken, getUser)

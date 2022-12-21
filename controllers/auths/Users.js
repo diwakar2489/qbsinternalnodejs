@@ -53,8 +53,10 @@ module.exports.Login = async (req, res) => {
     try {
         let emailID = req.body.email;
         const password = req.body.password;
+       
         if (emailID != "" && password != "") {
-            Users.getUsersByEmailId(emailID, async (error, user) => {
+            Users.getUsersLoginEmailId(emailID, async (error, user) => {
+               // console.log(user);
                 if (user == '') {
                     return res.status(400).json({ status: false, msg: "Invalid Credentials" });
                 } else {
