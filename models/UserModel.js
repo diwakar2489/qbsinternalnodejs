@@ -92,7 +92,7 @@ Users.getUsersById = (ID, results) => {
 }
 /*============================ get Users by email ================================*/
 Users.getUsersByEmailId = (emailID, results) => {
-    dbConn.query('select U.id,concat(UD.fname," ",UD.mname," ",UD.lname) as name,U.user_type,U.email,U.password,U.alt_email,U.dept_id,U.role_id,U.status from tm_user as U ' +
+    dbConn.query('select U.id,U.email,UD.fname,UD.mname,UD.lname, from tm_user as U ' +
         'join tm_user_detail as UD on UD.user_id = U.id where U.email = "' + emailID + '"', (err, res) => {
             if (err) {
                 results(err);
