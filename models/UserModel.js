@@ -185,6 +185,36 @@ Users.createUsers = (requestDataOne,requestDataTwo, result) => {
             }
         })
 };
+/*======================= Create User Remarks ==============================*/
+Users.createUsersRemarks = (id,requestDataOne,requestDataTwo, result) => {
+    if(id){
+    var command = 'update  tm_user_detail set it_status = ?,updated_on=?,updated_by=? where user_id= ?'
+        dbConn.query(command,
+            [
+                requestDataOne.it_status,
+                requestDataOne.updated_on,
+                requestDataOne.updated_by,
+                id
+            ], (err, res) => {
+                if (err) {
+                    console.log(err)
+                } else {
+                    var command2 = 'INSERT INTO tm_user_remarks (user_id, remarks,created_on,created_by) VALUES (?,?,?,?)';
+                dbConn.query(command2, [
+                        requestDataTwo.user_id,
+                        requestDataTwo.remarks,
+                        requestDataTwo.created_on,
+                        requestDataTwo.created_by], (err, resinsert) => {
+                        if (err) throw err;
+                });
+                    result(null, res);
+                }
+            })
+    
+    }else{
+        console.log(err)
+    }
+};
 /*======================= Create Links User ==============================*/
 Users.createLinkUsers = (requestDataOne,requestDataTwo, result) => {
 

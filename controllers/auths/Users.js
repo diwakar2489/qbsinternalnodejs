@@ -153,6 +153,38 @@ module.exports.addUser = async (req, res) => {
         console.log(error);
     }
 };
+/*============================ Add Users ======================================*/
+module.exports.UserRemarksUpdate = async (req, res) => {
+    console.log(req.body)
+    try {
+        const { it_status,userId,itremaks, created_on, created_by } = req.body;
+        
+        var firstRequestData = {
+            it_status:it_status,
+            updated_on: created_on,
+            updated_by: created_by,
+        }
+        var secondRequestData = {
+            user_id: userId,
+            remarks: itremaks,
+            created_on: created_on,
+            created_by: created_by,
+        }
+        Users.createUsersRemarks(userId,firstRequestData, secondRequestData, (error, result) => {
+            //console.log(result);
+            if (result) {
+                res.status(200).json({ status: true, msg: "Users remarks data inserted successfully", data: result });
+            } else {
+                res.status(201).json({ status: false, msg: "Something Went Wrong" });
+            }
+
+        });
+
+    } catch (error) {
+        res.status(400).json({ status: false, msg: "Something Went Wrong" });
+        console.log(error);
+    }
+};
 /*============================ Add Links Users ======================================*/
 module.exports.addLinkUser = async (req, res) => {
     console.log(req.body)
