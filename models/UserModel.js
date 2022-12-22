@@ -10,7 +10,7 @@ var Users = function (list) {
 Users.getUsers = (pagees, pageSize,result) => {
     let page = pagees ? Number(pagees) : 1;
     const startingLimit = (page - 1) * pageSize;
-    dbConn.query('select U.id,concat(UD.fname," ",UD.mname," ",UD.lname) as name,U.email,U.link_status as link,U.status,Cm.name as company,D.name as dept_name,R.name as role_name from tm_user as U ' +
+    dbConn.query('select U.id,concat(UD.fname," ",UD.mname," ",UD.lname) as name,UD.it_status,U.email,U.dept_id,U.role_id,U.user_type,U.link_status as link,U.status,Cm.name as company,D.name as dept_name,R.name as role_name from tm_user as U ' +
         'join tm_user_detail as UD on UD.user_id = U.id '+
         'left join tm_company as Cm on Cm.id = U.comp_id '+
         'left join tm_department as D on D.id = U.dept_id ' +
