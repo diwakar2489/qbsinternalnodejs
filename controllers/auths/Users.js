@@ -157,7 +157,7 @@ module.exports.addUser = async (req, res) => {
 module.exports.UserRemarksUpdate = async (req, res) => {
     console.log(req.body)
     try {
-        const { it_status,userId,itremaks, created_on, created_by } = req.body;
+        const { it_status,userId,itremaks,system_allocate, created_on, created_by } = req.body;
         
         var firstRequestData = {
             it_status:it_status,
@@ -166,6 +166,7 @@ module.exports.UserRemarksUpdate = async (req, res) => {
         }
         var secondRequestData = {
             user_id: userId,
+            system_allocate,
             remarks: itremaks,
             created_on: created_on,
             created_by: created_by,

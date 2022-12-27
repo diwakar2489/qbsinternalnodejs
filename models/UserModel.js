@@ -199,10 +199,11 @@ Users.createUsersRemarks = (id,requestDataOne,requestDataTwo, result) => {
                 if (err) {
                     console.log(err)
                 } else {
-                    var command2 = 'INSERT INTO tm_user_remarks (user_id, remarks,created_on,created_by) VALUES (?,?,?,?)';
+                    var command2 = 'INSERT INTO tm_user_remarks (user_id, remarks,system_allocate,created_on,created_by) VALUES (?,?,?,?,?)';
                 dbConn.query(command2, [
                         requestDataTwo.user_id,
                         requestDataTwo.remarks,
+                        requestDataTwo.system_allocate,
                         requestDataTwo.created_on,
                         requestDataTwo.created_by], (err, resinsert) => {
                         if (err) throw err;
