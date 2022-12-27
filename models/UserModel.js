@@ -44,11 +44,12 @@ Users.getLinkUsers = (pagees, pageSize,result) => {
 Users.getItAssignUsers = (pagees, pageSize,result) => {
     let page = pagees ? Number(pagees) : 1;
     const startingLimit = (page - 1) * pageSize;
-    dbConn.query('select U.id,concat(UD.fname," ",UD.mname," ",UD.lname) as name,UD.emp_code as emp_id,UD.joining_date,UD.contact_no,U.email,Cm.name as company from tm_user as U ' +
+    dbConn.query('select U.id,concat(UD.fname," ",UD.mname," ",UD.lname) as name,UD.emp_code as emp_id,UD.joining_date as doj,UD.contact_no as mobile,U.email,Cm.name as company,D.name as dept_name,R.name as role_name from tm_user as U ' +
         'join tm_user_detail as UD on UD.user_id = U.id '+
         'left join tm_company as Cm on Cm.id = U.comp_id '+
+        'left join tm_department as D on D.id = U.dept_id ' +
         'left join tm_user_remarks as UR on UR.user_id = U.id ' +
-        '  where U.link_status = 0 or UR.system_allocate = 1 ORDER BY U.id desc limit ' + startingLimit + ',' + pageSize, (err, res) => {
+        'left join tm_role as R on R.id = U.role_id where U.link_status = 0 or UR.system_allocate = 1 ORDER BY U.id desc limit ' + startingLimit + ',' + pageSize, (err, res) => {
             if (err) {
                 console.log(err)
                 result(err);
@@ -298,9 +299,10 @@ Users.updateUsersDetailsInfo = (id,requestDataOne,requestDataTwo, result) => {
             if (err) {
                 console.log(err)
             } else {
-               var command2 = 'update tm_user_detail set rept_mng_id=?,joining_date=?,fname=?,mname=?,lname=?,gender=?,contact_no=?,updated_on = ?,updated_by = ? where user_id= ?'
+               var command2 = 'update tm_user_detail set location=?,rept_mng_id=?,joining_date=?,fname=?,mname=?,lname=?,gender=?,contact_no=?,updated_on = ?,updated_by = ? where user_id= ?'
                // var command2 = 'INSERT INTO tm_user_detail (user_id, emp_code,rept_mng_id,joining_date,fname,mname,lname,gender,contact_no,created_on,created_by) VALUES (?,?,?,?,?,?,?,?,?,?,?)';
                 dbConn.query(command2, [
+                        requestDataTwo.location,
                         requestDataTwo.rept_mng_id,
                         requestDataTwo.joining_date,
                         requestDataTwo.fname,

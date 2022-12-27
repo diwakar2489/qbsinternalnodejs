@@ -414,7 +414,7 @@ module.exports.UserDetailsUpdate = async (req, res) => {
     try {
         let ID = req.body.id;
 
-        const { usertype,comp, dept, role, reportingMNG, joiningdate, fname, mname, lname, status, gender, contact, updated_on, updated_by } = req.body;
+        const { usertype,comp, dept, role,location, reportingMNG, joiningdate, fname, mname, lname, status, gender, contact, updated_on, updated_by } = req.body;
 
         var firstRequestData = {
             status: status,
@@ -428,6 +428,7 @@ module.exports.UserDetailsUpdate = async (req, res) => {
         var secondRequestData = {
             rept_mng_id: reportingMNG,
             joining_date: joiningdate,
+            location:location,
             fname: fname,
             mname: mname,
             lname: lname,
