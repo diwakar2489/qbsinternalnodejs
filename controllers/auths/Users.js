@@ -48,6 +48,28 @@ module.exports.UserLinkList = (req, res) => {
         res.status(201).json({ status: false, msg: error })
     }
 }
+/*=============== Get IT Assign  List ============================*/
+module.exports.getITAssignList = (req, res) => {
+    try {
+        const pageSize = 2;
+        const page = parseInt(req.query.page);
+        Users.countItAssignUsers((error1, total) => {
+            Users.getItAssignUsers(page, pageSize, (error, data) => {
+                res.status(200).json({
+                    status: true,
+                    msg: 'Users message successfully',
+                    nbPages: total[0].Total,
+                    page: page,
+                    limit: pageSize,
+                    users: data
+                });
+            });
+        });
+
+    } catch (error) {
+        res.status(201).json({ status: false, msg: error })
+    }
+}
 /*=============== User Login =======================*/
 module.exports.Login = async (req, res) => {
     try {

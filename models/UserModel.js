@@ -40,6 +40,35 @@ Users.getLinkUsers = (pagees, pageSize,result) => {
             }
         })
 }
+/*================================== get It Assign Users ================================*/
+Users.getItAssignUsers = (pagees, pageSize,result) => {
+    let page = pagees ? Number(pagees) : 1;
+    const startingLimit = (page - 1) * pageSize;
+    dbConn.query('select U.id,concat(UD.fname," ",UD.mname," ",UD.lname) as name,UD.emp_code as emp_id,UD.joining_date,UD.contact_no,U.email,Cm.name as company from tm_user as U ' +
+        'join tm_user_detail as UD on UD.user_id = U.id '+
+        'left join tm_company as Cm on Cm.id = U.comp_id '+
+        'left join tm_user_remarks as UR on UR.user_id = U.id ' +
+        '  where U.link_status = 0 or UR.system_allocate = 1 ORDER BY U.id desc limit ' + startingLimit + ',' + pageSize, (err, res) => {
+            if (err) {
+                console.log(err)
+                result(err);
+            } else {
+                result(null, res);
+            }
+        })
+}
+/*================================== get All Users ================================*/
+Users.countItAssignUsers = (result) => {
+    dbConn.query('select COUNT(U.id) as Total from tm_user as U ' +
+        'join tm_user_remarks as UR on UR.user_id = U.id where U.link_status = 0 or UR.system_allocate = 1 ', (err, res) => {
+            if (err) {
+                console.log(err)
+                result(err);
+            } else {
+                result(null, res);
+            }
+        })
+}
 /*================================== get All Users ================================*/
 Users.countLinksUsers = (result) => {
     dbConn.query('select COUNT(U.id) as Total from tm_user as U ' +

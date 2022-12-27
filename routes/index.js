@@ -15,7 +15,7 @@ router.use(fileUploads({
 }));
 
 /*=================== Login routers =====================*/
-var { Login, addUser,addLinkUser,UserLinkVerify,UserLinkList,UserLinksDetailsUpdate,UserRemarksUpdate, getUser, editUsers, UserDetailsUpdate, Logout, ForgotPass, verifyOtp, changePassword } = require("../controllers/auths/Users.js");
+var { Login, addUser,addLinkUser,UserLinkVerify,UserLinkList,UserLinksDetailsUpdate,UserRemarksUpdate,getITAssignList, getUser, editUsers, UserDetailsUpdate, Logout, ForgotPass, verifyOtp, changePassword } = require("../controllers/auths/Users.js");
 var { refreshToken } =  require("../controllers/auths/RefreshToken.js");
 
 router.get('/token', refreshToken);
@@ -28,6 +28,7 @@ router.put('/change-password', changePassword);
 router.post('/user_link_create',verifyToken, addLinkUser);
 router.post('/user_link_verify', UserLinkVerify);
 router.get('/user_link_list',verifyToken, UserLinkList);
+router.get('/it_assign_list',verifyToken,getITAssignList);
 router.put('/user_link_details_update', UserLinksDetailsUpdate);
 
 router.post('/user_register',verifyToken, addUser)
