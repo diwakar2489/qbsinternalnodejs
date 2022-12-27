@@ -44,7 +44,7 @@ Users.getLinkUsers = (pagees, pageSize,result) => {
 Users.getItAssignUsers = (pagees, pageSize,result) => {
     let page = pagees ? Number(pagees) : 1;
     const startingLimit = (page - 1) * pageSize;
-    dbConn.query('select U.id,concat(UD.fname," ",UD.mname," ",UD.lname) as name,UD.emp_code as emp_id,UD.joining_date as doj,UD.contact_no as mobile,U.email,Cm.name as company,D.name as dept_name,R.name as role_name from tm_user as U ' +
+    dbConn.query('select U.id,concat(UD.fname," ",UD.mname," ",UD.lname) as name,UD.emp_code as emp_id,UD.joining_date as doj,UD.contact_no as mobile,UD.location,U.email,Cm.name as company,D.name as dept_name,R.name as role_name from tm_user as U ' +
         'join tm_user_detail as UD on UD.user_id = U.id '+
         'left join tm_company as Cm on Cm.id = U.comp_id '+
         'left join tm_department as D on D.id = U.dept_id ' +
