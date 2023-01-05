@@ -6,10 +6,10 @@ var Circular = function (list) {
     this.status = list.status;
 };
 /*======================== get Dashboard Circular List ===========================*/
-Circular.dashboardCircularList = (pagees, pageSize,result) => {
-    let page = pagees ? Number(pagees) : 1;
-    const startingLimit = (page - 1) * pageSize;
-    dbConn.query('select C.id,C.circular_attachment as img,C.status,C.title,C.created_on from tm_circulars as C ORDER BY C.id desc limit ' + startingLimit + ',' + pageSize, (err, res) => {
+Circular.dashboardCircularList = (UserID,result) => {
+   
+    dbConn.query('select C.id,C.circular_attachment as img,C.status,C.title,C.created_on from tm_circulars as C '+
+    'join tm_user as U on U.comp_id = C.comp_id where U.id = '+UserID+' ORDER BY C.id desc ', (err, res) => {
         if (err) {
             console.log(err)
             result(err);
@@ -33,7 +33,7 @@ Circular.getAllCircular = (pagees, pageSize,result) => {
     })
 }
 /*======================== get All count Circular ===========================*/
-Circular.countCircularsMessages = (result) => {
+Circular.countCircularsMessagesList = (result) => {
     dbConn.query('select COUNT(C.id) as Total from tm_circulars as C ', (err, res) => {
         if (err) {
             console.log(err)

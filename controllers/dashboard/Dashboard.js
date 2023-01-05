@@ -7,6 +7,7 @@ var Circular = require("../../models/CircularModel.js");
 module.exports.DashboardUserMessage = async (req, res) => {
     try {
         Dashboard.getDashboardUserMessage((error, data) => {
+            console.log(data)
             res.status(200).json({
                 status: true,
                 msg: 'User Dashboard Message Data fetch successfully',
@@ -63,20 +64,14 @@ module.exports.DashboardOpeningList = async (req, res) => {
 /*======================== Get Dashboard Circular Data List========================*/
 module.exports.DashboardCircularList = async (req, res) => {
     try {
-        const pageSize = 2;
-        const page = parseInt(req.query.page);
-        Circular.countCircularsMessages((error1, total) => {
-            Circular.dashboardCircularList(page, pageSize,(error, data) => {
+        const UserID = req.body.userId;
+            Circular.dashboardCircularList(UserID,(error, data) => {
                 res.status(200).json({
                     status: true,
                     msg: 'User Dashboard Circular Data fetch successfully',
-                    nbPages: total[0].Total,
-                    page: page,
-                    limit: pageSize,
                     result: data
                 });
             });
-        });
     } catch (error) {
         res.status(201).json({ status: false, msg: error })
     }

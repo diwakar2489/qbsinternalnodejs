@@ -27,7 +27,7 @@ module.exports.getAllCirculars = (req, res) => {
     try {
         const pageSize = 2;
         const page = parseInt(req.query.page) || 1;
-        Circulars.countCircularsMessages((error1, total) => {
+        Circulars.countCircularsMessagesList((error1, total) => {
             Circulars.getAllCircular(page, pageSize, (error, data) => {
                 res.status(200).json({
                     status: true,
