@@ -16,6 +16,7 @@ app.use(express.json());
 app.use(express.urlencoded({extended:true}));
 
 app.use('/images', express.static(__dirname+'/uploads/forms'));
+app.use('/circulars', express.static(__dirname+'/uploads/circulars'));
 
 app.use('/api',Authrouter);
 
