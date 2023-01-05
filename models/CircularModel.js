@@ -88,7 +88,7 @@ Circular.updateCircularWithIMGInfo = (ID, CircularReqData, result) => {
             CircularReqData.comp_id,
             CircularReqData.title,
             CircularReqData.message,
-            CircularReqData.photo,
+            CircularReqData.attachment,
             CircularReqData.status,
             CircularReqData.updated_on,
             CircularReqData.updated_by,

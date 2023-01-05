@@ -48,17 +48,18 @@ module.exports.getAllCirculars = (req, res) => {
 module.exports.addCircular = async (req, res) => {
     console.log(req.files);
     try {
-        const { compId, title, message,attachment, status, created_on, created_by } = req.body;
-        if (attachment) {
-            // let fileName = Date.now() + '_' + req.files.attachment.name;
+        let fileName = Date.now() + '_' + req.files.attachment.name;
+        const { compId, title, message, status, created_on, created_by } = req.body;
+        if (fileName) {
+            
 
-            // let newPath = path.join(process.cwd(), 'uploads/circulars', fileName);
-            // req.files.attachment.mv(newPath);
+            let newPath = path.join(process.cwd(), 'uploads/circulars', fileName);
+            req.files.attachment.mv(newPath);
             var requestData = {
                 comp_id: compId,
                 title: title,
                 message: message,
-                attachment: attachment,
+                attachment: fileName,
                 status: status,
                 created_on: created_on,
                 created_by: created_by,
@@ -103,26 +104,29 @@ module.exports.editCircularMessage = async (req, res) => {
 };
 /*======================================  updated Circular with & Without attachment ==================================================*/
 module.exports.CircularMessageUpdate = async (req, res) => {
-   // console.log(req.files);
+    //console.log(req.files);return false;
+   
+    let ID = req.body.id;
     try {
-        let ID = req.body.id;
-        //let fileName = {};
-        const { compId, title, message,attachment, status, updated_on, updated_by } = req.body;
-        if (attachment) {
-            // fileName = Date.now() + '_' + req.files.attachment.name;
-            // let newPath = path.join(process.cwd(), 'uploads/circulars', fileName);
-            // req.files.attachment.mv(newPath);
+       
+        //console.log(fileName);return false;
+        const { compId, title, message, status, updated_on, updated_by } = req.body;
+        if (req.files) {
+            let fileName = Date.now() + '_' + req.files.attachment.name;
+             let newPath = path.join(process.cwd(), 'uploads/circulars', fileName);
+             req.files.attachment.mv(newPath);
             var requestData = {
                 comp_id: compId,
                 title: title,
                 message: message,
-                attachment: attachment,
+                attachment: fileName,
                 status: status,
                 updated_on: updated_on,
                 updated_by: updated_by,
             }
+            
             Circulars.updateCircularWithIMGInfo(ID, requestData, (error, data) => {
-                console.log(data);
+              //  console.log(data);
                 if (data.affectedRows > 0) {
 
                     res.status(200).json({ status: true, msg: 'Update Circular message successfully', result: data });
@@ -140,6 +144,7 @@ module.exports.CircularMessageUpdate = async (req, res) => {
                 updated_on: updated_on,
                 updated_by: updated_by,
             }
+           // console.log(requestData)
             Circulars.updateCircularWithoutIMGInfo(ID, requestData, (error, data) => {
                 console.log(data);
                 if (data.affectedRows > 0) {
