@@ -22,10 +22,12 @@ module.exports.DashboardUserMessage = async (req, res) => {
 /*======================== Get Dashboard Forms Data List========================*/
 module.exports.DashboardFormsList = async (req, res) => {
     try {
+        const UserID = req.body.userId
         const pageSize = 2;
         const page = parseInt(req.query.page);
-        Forms.countFormsMessages((error1, total) => {
-            Forms.getDashboardFormsData(page, pageSize,(error, data) => {
+        Forms.countFormsDashboardMessages(UserID,(error1, total) => {
+            Forms.getDashboardFormsData(UserID, page, pageSize,(error, data) => {
+                console.log(data)
                 res.status(200).json({
                     status: true,
                     msg: 'User Dashboard Form Data fetch successfully',

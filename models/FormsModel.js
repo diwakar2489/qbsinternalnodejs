@@ -6,10 +6,23 @@ var Forms = function (list) {
     this.status = list.status;
 };
 /*======================== get Users Forms Dashboard ===========================*/
-Forms.getDashboardFormsData = (pagees, pageSize,result) => {
+Forms.getDashboardFormsData = (UserID,pagees, pageSize,result) => {
     let page = pagees ? Number(pagees) : 1;
     const startingLimit = (page - 1) * pageSize;
-    dbConn.query('select F.id,F.title,F.created_on,F.form_attachment as img from tm_forms as F where F.status = 1 order by F.id desc limit ' + startingLimit + ',' + pageSize, (err, res) => {
+    dbConn.query('select F.id,F.title,F.created_on,F.form_attachment as img from tm_forms as F '+
+    'left join tm_user as U on U.comp_id = F.comp_id where U.id = "'+UserID+'" and F.status = 1 order by F.id desc limit ' + startingLimit + ',' + pageSize, (err, res) => {
+        if (err) {
+            console.log(err)
+            result(err);
+        } else {
+            result(null, res);
+        }
+    })
+}
+/*======================== get Dashboard count Forms ===========================*/
+Forms.countFormsDashboardMessages = (UserID,result) => {
+    dbConn.query('select COUNT(F.id) as Total from tm_forms as F '+
+    'left join tm_user as U on U.comp_id = F.comp_id where U.id = "'+UserID+'" and F.status = 1 ', (err, res) => {
         if (err) {
             console.log(err)
             result(err);

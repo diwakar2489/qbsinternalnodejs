@@ -41,7 +41,7 @@ router.put('/update_users_remarks',verifyToken, UserRemarksUpdate)
 var {DashboardUserMessage, DashboardFormsList, DashboardOpeningList, DashboardCircularList,DashboardPolicyList} = require("../controllers/dashboard/Dashboard");
 
 router.get('/dashboard_messages',verifyToken, DashboardUserMessage);
-router.get('/dashboard_forms',verifyToken, DashboardFormsList);
+router.post('/dashboard_forms',verifyToken, DashboardFormsList);
 router.get('/dashboard_opening',verifyToken, DashboardOpeningList);
 router.post('/dashboard_circular',verifyToken, DashboardCircularList);
 router.post('/dashboard_policy',verifyToken, DashboardPolicyList);
