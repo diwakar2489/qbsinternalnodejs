@@ -51,7 +51,7 @@ module.exports.addPolicy = async (req, res) => {
         const { compId, title, message, status, created_on, created_by } = req.body;
         if (req.files) {
             let fileName = Date.now() + '_' + req.files.attachment.name;
-            let newPath = path.join(process.cwd(), 'uploads/policys', fileName);
+            let newPath = path.join(process.cwd(), 'uploads/policies', fileName);
             req.files.attachment.mv(newPath);
             var requestData = {
                 comp_id: compId,
