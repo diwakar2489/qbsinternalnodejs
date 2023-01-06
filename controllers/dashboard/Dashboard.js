@@ -22,7 +22,7 @@ module.exports.DashboardUserMessage = async (req, res) => {
 /*======================== Get Dashboard Forms Data List========================*/
 module.exports.DashboardFormsList = async (req, res) => {
     try {
-        const UserID = req.body.userId
+        const UserID = req.query.userId
         const pageSize = 2;
         const page = parseInt(req.query.page);
         Forms.countFormsDashboardMessages(UserID,(error1, total) => {
