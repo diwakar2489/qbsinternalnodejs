@@ -23,6 +23,7 @@ module.exports.searchDashboardMessagesData = async (req, res) => {
         res.status(201).json({ status: false, msg: error })
     }
 }
+
 /*=============== Get All Dashboard Messages ============================*/
 module.exports.DashboardMessage = async (req, res) => {
     try {

@@ -7,7 +7,8 @@ var Policy = require("../../models/PolicyModel.js");
 /*======================== Get Dashboard Message Data List========================*/
 module.exports.DashboardUserMessage = async (req, res) => {
     try {
-        Dashboard.getDashboardUserMessage((error, data) => {
+        const UserID = req.query.userId;
+        Dashboard.getDashboardUserMessage(UserID,(error, data) => {
             console.log(data)
             res.status(200).json({
                 status: true,

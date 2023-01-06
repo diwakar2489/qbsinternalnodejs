@@ -5,8 +5,10 @@ var Dashboard = function (list) {
     this.status = list.status;
 };
 /*======================== get Dashboard User Message  ===========================*/
-Dashboard.getDashboardUserMessage = (result) => {
-    dbConn.query('select M.id,M.title,M.created_on,M.photo as img from tm_message as M where M.status = 1 order by M.id desc ', (err, res) => {
+Dashboard.getDashboardUserMessage = (userId,result) => {
+    dbConn.query('select M.id,M.title,M.created_on,M.photo as img from tm_message as M '+
+        'left join tm_company as C on C.id = M.comp_id '+
+        'left join tm_user as U on U.comp_id = M.comp_id where U.id = "'+userId+'" and M.status = 1 order by M.id desc ', (err, res) => {
         if (err) {
             console.log(err)
             result(err);
@@ -32,6 +34,7 @@ Dashboard.getSearchDashboard = (search,pagees, pageSize, total, result) => {
         }
     })
 }
+
 /*=============== Get All Dashboard Messages ============================*/
 Dashboard.getAllDashboard = (pagees, pageSize, total, result) => {
     const numOfResults = total;
