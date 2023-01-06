@@ -38,12 +38,13 @@ router.put('/update_users',verifyToken, UserDetailsUpdate)
 router.put('/update_users_remarks',verifyToken, UserRemarksUpdate)
 
 /*=================== Dashboard routers =====================*/
-var {DashboardUserMessage, DashboardFormsList, DashboardOpeningList, DashboardCircularList} = require("../controllers/dashboard/Dashboard");
+var {DashboardUserMessage, DashboardFormsList, DashboardOpeningList, DashboardCircularList,DashboardPolicyList} = require("../controllers/dashboard/Dashboard");
 
 router.get('/dashboard_messages',verifyToken, DashboardUserMessage);
 router.get('/dashboard_forms',verifyToken, DashboardFormsList);
 router.get('/dashboard_opening',verifyToken, DashboardOpeningList);
 router.post('/dashboard_circular',verifyToken, DashboardCircularList);
+router.post('/dashboard_policy',verifyToken, DashboardPolicyList);
 /*=================== Dashboard Message routers =====================*/
 var {searchDashboardMessagesData,DashboardMessage,addMessage,editMessage,DashboardMessageUpdate} = require("../controllers/dashboard/Dashboard_message");
 router.get('/search_messages',searchDashboardMessagesData);

@@ -6,8 +6,8 @@ module.exports.searchCircularData = async (req, res) => {
     try {
         const pageSize = 2;
         const page = parseInt(req.query.page);
-        Circulars.countCircularsMessages((error1, total) => {
-            Circulars.dashboardCircularList(page,pageSize,(error, data) => {
+        Circulars.countCircularsMessagesList((error1, total) => {
+            Circulars.dashboardCircularList(1,(error, data) => {
                 res.status(200).json({ 
                     status: true,
                     msg: 'Circulars message successfully',

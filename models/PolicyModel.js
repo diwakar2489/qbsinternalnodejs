@@ -33,6 +33,19 @@ Policy.getAllPolicy = (pagees, pageSize,result) => {
         }
     })
 }
+/*=============== Get dashboard Policy ============================*/
+Policy.dashboardPolicyList = (UserID,result) => {
+    dbConn.query('select P.id,P.policy_attachment as img,P.title,P.created_on from tm_policy as P ' +
+    // 'left join tm_company as Cm on Cm.id = P.comp_id '+
+    'left join tm_user as U on  U.comp_id = P.comp_id where U.id = "'+UserID+'" ORDER BY P.id desc ', (err, res) => {
+        if (err) {
+            console.log(err)
+            result(err);
+        } else {
+            result(null, res);
+        }
+    })
+}
 /*======================== get All count Policy ===========================*/
 Policy.countPolicyMessages = (result) => {
     dbConn.query('select COUNT(P.id) as Total from tm_policy as P ', (err, res) => {
